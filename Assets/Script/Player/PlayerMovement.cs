@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
@@ -34,11 +35,19 @@ public class PlayerMovement : MonoBehaviour
 
     //
 
+    // Health Manager
+    [SerializeField] private int currentHealth;
+    //
     private void Start()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
 
+
+        // health
+        currentHealth = 100;
+        Debug.Log("Current health: " + currentHealth);
+        //
 
         // Debug phím tắt
         Debug.Log("WASD: di chuyển");
@@ -162,4 +171,16 @@ public class PlayerMovement : MonoBehaviour
         // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
     }
 
+
+    #region Health Methods
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Enemy"))
+        {
+            // Update health
+            currentHealth -= 10;
+            Debug.Log("Current health: " + currentHealth);
+        }
+    }
+    #endregion
 }

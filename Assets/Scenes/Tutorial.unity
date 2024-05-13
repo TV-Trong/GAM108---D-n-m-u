@@ -25484,7 +25484,7 @@ MonoBehaviour:
   groundCheck: {fileID: 499265189}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   speed: 8
   jumpPower: 16
   dashPower: 50
@@ -25492,6 +25492,7 @@ MonoBehaviour:
   idleSound: {fileID: 0}
   JumpSound: {fileID: 0}
   rollSound: {fileID: 0}
+  currentHealth: 0
 --- !u!114 &1919087512
 MonoBehaviour:
   m_ObjectHideFlags: 0
