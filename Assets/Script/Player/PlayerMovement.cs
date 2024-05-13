@@ -1,18 +1,19 @@
-﻿using System.Security.Cryptography;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Rigidbody2D rb; 
+    // Physics
+    private Rigidbody2D rb;
+    //
     [SerializeField] private Transform groundCheck; // Object con của player
     [SerializeField] private LayerMask groundLayer; // layer của nền đứng
 
     private float horizontal;
-    private float speed = 8f;
-    private float jumpPower = 16f;
+    [SerializeField] private float speed = 8f;
+    [SerializeField] private float jumpPower = 16f;
+    [SerializeField] private float dashPower = 50f;
     private bool isFacingRight = true;
 
 
@@ -36,14 +37,23 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
+        rb = GetComponent<Rigidbody2D>();
 
+
+        // Debug phím tắt
+        Debug.Log("WASD: di chuyển");
+        Debug.Log("Chuột trái: bắn");
+        Debug.Log("R: Dash (lộn tới)");
+        Debug.Log("Space: Nhảy");
+        Debug.Log("");
     }
 
     // Update is called once per frame
     void Update()
     {
        if (isMoving)
-        {
+       {
+            isGrounded();
             rb.velocity = new Vector2(horizontal * speed, rb.velocity.y); // di chuyển nhân vật theo trục ngang
 
             // Kiểm tra hướng nhìn nhân vật
@@ -57,7 +67,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             AnimationController();
-        }
+       }
     }
 
     private bool isGrounded()
@@ -65,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
         // Nếu nhân vật đang chạm đất, thì set trigger "isGrounding" trong animator thành true
         animator.SetBool("isGrounding", grounded);
+        Debug.Log("isGrounding: " + grounded);
         return grounded;
     }
 
@@ -114,12 +125,10 @@ public class PlayerMovement : MonoBehaviour
             animator.Play("Roll");
 
             // Xác định hướng lực sẽ được áp dụng (trong trường hợp này, theo hướng người chơi đang nhìn)
-            Vector2 forceDirection = transform.right * (isFacingRight ? 1f : -1f); // Điều chỉnh hướng tùy thuộc vào hướng nhìn
-
             // Áp dụng lực 
-            
-            rb.AddForce(new Vector2(forceDirection.x * 100f, forceDirection.y), ForceMode2D.Impulse);
-            //transform.Translate(forceDirection * 300f * Time.deltaTime);
+
+            transform.position += transform.right * (isFacingRight ? 1:-1) * dashPower * Time.deltaTime;
+
         }
         isRolling = false;
     }
