@@ -862,8 +862,8 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: "GAM108 - D\u1EF1 \xE1n m\u1EABu"
-  metroPackageVersion: 
+  metroPackageName: 
+  metroPackageVersion: 1.0.0.0
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
@@ -871,7 +871,7 @@ PlayerSettings:
   metroCertificateNotAfter: 0000000000000000
   metroApplicationDescription: "GAM108 - D\u1EF1 \xE1n m\u1EABu"
   wsaImages: {}
-  metroTileShortName: 
+  metroTileShortName: "GAM108 - D\u1EF1 \xE1n m\u1EABu"
   metroTileShowName: 0
   metroMediumTileShowName: 0
   metroLargeTileShowName: 0

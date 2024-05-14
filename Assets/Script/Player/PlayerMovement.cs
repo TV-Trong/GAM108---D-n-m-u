@@ -15,12 +15,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 8f;
     [SerializeField] private float jumpPower = 16f;
     [SerializeField] private float dashPower = 50f;
+    [SerializeField] private float climbSpeed = 5f;
     private bool isFacingRight = true;
 
 
     private bool isRolling = false;
     private bool isFiring = false;
     private bool isMoving = true;
+    private bool isClimbing = false;
     // Animation
     private Animator animator;
 
@@ -79,6 +81,16 @@ public class PlayerMovement : MonoBehaviour
        }
     }
 
+    private void FixedUpdate()
+    {
+        if (isClimbing)
+        {
+            float climbInput = Input.GetAxisRaw("Vertical");
+            rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
+        }
+    }
+
+    #region Checking Methods
     private bool isGrounded()
     {
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
@@ -88,6 +100,9 @@ public class PlayerMovement : MonoBehaviour
         return grounded;
     }
 
+    #endregion
+
+    #region Activiies Methods
     private void Flip()
     {
         isFacingRight = !isFacingRight;
@@ -95,6 +110,27 @@ public class PlayerMovement : MonoBehaviour
         localScale.x *= -1f;
         transform.localScale = localScale;
     }
+    void AnimationController()
+    {
+        float speedMove = rb.velocity.magnitude;
+        if (speedMove > 0)
+        {
+            animator.SetBool("isMoving", true);
+        }
+        else
+        {
+            animator.SetBool("isMoving", false);
+        }
+    }
+
+    void takeAction()
+    {
+        // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
+    }
+
+
+    #endregion
+
     #region Input Action System
     // Hàm Movement được gọi mỗi khi người chơi thực hiện hành động di chuyển.
     public void Movement(InputAction.CallbackContext context)
@@ -153,33 +189,31 @@ public class PlayerMovement : MonoBehaviour
         isFiring = false;
     }
     #endregion
-    void AnimationController()
-    {
-        float speedMove = rb.velocity.magnitude;
-        if (speedMove > 0)
-        {
-            animator.SetBool("isMoving", true);
-        }
-        else
-        {
-            animator.SetBool("isMoving", false);
-        }
-    }
-
-    void takeAction()
-    {
-        // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
-    }
 
 
-    #region Health Methods
+    #region Collision Methods
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Enemy"))
+        if (collision.CompareTag("Thang")) // leo thang
         {
-            // Update health
+            rb.gravityScale = 0f;
+            isClimbing = true;
+        }
+
+        if (collision.CompareTag("Gai"))
+        {
+            Debug.Log("Trừ máu");
             currentHealth -= 10;
-            Debug.Log("Current health: " + currentHealth);
+            Debug.Log("Current Health: " + currentHealth);
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Thang")) // leo thang
+        {
+            rb.gravityScale = 5f;
+            isClimbing = false;
         }
     }
     #endregion
