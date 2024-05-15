@@ -1,4 +1,6 @@
-﻿using Unity.VisualScripting;
+﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -16,13 +18,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpPower = 16f;
     [SerializeField] private float dashPower = 50f;
     [SerializeField] private float climbSpeed = 5f;
+
+
+    // boolean values
     private bool isFacingRight = true;
-
-
     private bool isRolling = false;
     private bool isFiring = false;
     private bool isMoving = true;
     private bool isClimbing = false;
+    private bool isHurting = false;
     // Animation
     private Animator animator;
 
@@ -86,6 +90,10 @@ public class PlayerMovement : MonoBehaviour
         if (isClimbing)
         {
             float climbInput = Input.GetAxisRaw("Vertical");
+            if (climbInput > 0f)
+            {
+                animator.SetTrigger("Climb");
+            }
             rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
         }
     }
@@ -126,6 +134,33 @@ public class PlayerMovement : MonoBehaviour
     void takeAction()
     {
         // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
+    }
+
+    public void takeDamage()
+    {
+        if (!isHurting)
+        {
+            isHurting = true;
+            Debug.Log("Trừ máu");
+            currentHealth -= 10;
+            Debug.Log("Current Health: " + currentHealth);
+            if (currentHealth <=0)
+            {
+                Debug.Log("Die");
+                Destroy(gameObject);
+            }
+            StartCoroutine(TakeDamage());
+        }
+
+    }
+
+    IEnumerator TakeDamage()
+    {
+        isHurting = true;
+        rb.AddForce(new Vector2(1f, 1f) * -5f, ForceMode2D.Impulse);
+        yield return new WaitForSeconds(2f);
+        isHurting = false;
+        yield return null;
     }
 
 
@@ -202,9 +237,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.CompareTag("Gai"))
         {
-            Debug.Log("Trừ máu");
-            currentHealth -= 10;
-            Debug.Log("Current Health: " + currentHealth);
+
         }
     }
 
