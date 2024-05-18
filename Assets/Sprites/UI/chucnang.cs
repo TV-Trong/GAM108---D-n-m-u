@@ -6,7 +6,7 @@ public class chucnang : MonoBehaviour
     public GameObject pauseMenuScreen;
     public void MenuPlay()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene("SceneManager.GetActiveScene().buildIndex + 1");
 
     }
     public void Quit()

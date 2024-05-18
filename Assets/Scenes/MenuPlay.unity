@@ -206,9 +206,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 656485462}
+      - m_Target: {fileID: 656485461}
         m_TargetAssemblyTypeName: chucnang, Assembly-CSharp
-        m_MethodName: Play
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -287,6 +287,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11b8e9dc1a8f8f241b8461fbe5aeca1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pauseMenuScreen: {fileID: 0}
 --- !u!114 &656485463
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,6 +35,6 @@ public class CharacterCreation : MonoBehaviour
 
         PlayerData player = new PlayerData(playerName, timeCreated);
         playerList.Add(player);
-        SceneManager.LoadScene("Play");
+        SceneManager.LoadScene(0);
     }
 }
