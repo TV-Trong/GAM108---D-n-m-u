@@ -5,249 +5,251 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+namespace PlayerController
 {
-    // Physics
-    private Rigidbody2D rb;
-    //
-    [SerializeField] private Transform groundCheck; // Object con của player
-    [SerializeField] private LayerMask groundLayer; // layer của nền đứng
-
-    private float horizontal;
-    [SerializeField] private float speed = 8f;
-    [SerializeField] private float jumpPower = 16f;
-    [SerializeField] private float dashPower = 50f;
-    [SerializeField] private float climbSpeed = 5f;
-
-
-    // boolean values
-    private bool isFacingRight = true;
-    private bool isRolling = false;
-    private bool isFiring = false;
-    private bool isMoving = true;
-    private bool isClimbing = false;
-    private bool isHurting = false;
-    // Animation
-    private Animator animator;
-
-    //
-    // Audio
-    private AudioSource speaker;
-
-    [SerializeField] private AudioClip walkSound;
-    [SerializeField] private AudioClip idleSound;
-    [SerializeField] private AudioClip JumpSound;
-    [SerializeField] private AudioClip rollSound;
-
-    //
-
-    // Health Manager
-    [SerializeField] private int currentHealth;
-    //
-    private void Start()
+    public class PlayerMovement : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        // Physics and Player Attributes
+        private Rigidbody2D rb;
+        //
+        [SerializeField] private Transform groundCheck; // Object con của player
+        [SerializeField] private LayerMask groundLayer; // layer của nền đứng
+
+        private float horizontal;
+        [SerializeField] private float speed = 8f;
+        [SerializeField] private float jumpPower = 16f;
+        [SerializeField] private float dashPower = 50f;
+        [SerializeField] private float climbSpeed = 5f;
 
 
-        // health
-        currentHealth = 100;
-        Debug.Log("Current health: " + currentHealth);
+        // States
+        private bool isFacingRight = true;
+        private bool isRolling = false;
+        private bool isFiring = false;
+        private bool isMoving = true;
+        private bool isClimbing = false;
+        private bool isHurting = false;
+        private bool isActing = false;
+        // Animation
+        private Animator animator;
+
+        //
+        // Audio
+        private AudioSource speaker;
+
+        [SerializeField] private AudioClip walkSound;
+        [SerializeField] private AudioClip idleSound;
+        [SerializeField] private AudioClip jumpSound;
+        [SerializeField] private AudioClip rollSound;
+        [SerializeField] private AudioClip hitSound;
+        [SerializeField] private AudioClip fireSound;
+
         //
 
-        // Debug phím tắt
-        Debug.Log("WASD: di chuyển");
-        Debug.Log("Chuột trái: bắn");
-        Debug.Log("R: Dash (lộn tới)");
-        Debug.Log("Space: Nhảy");
-        Debug.Log("");
-    }
+        // Health Manager
+        [SerializeField] private int currentHealth;
+        //
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody2D>();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-       if (isMoving)
-       {
-            isGrounded();
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y); // di chuyển nhân vật theo trục ngang
+        // Update is called once per frame
+        void Update()
+        {
+            if (isMoving)
+            {
+                HandleMovement();
+                CheckFlip();
+                UpdateAnimations();
+            }
+        }
 
-            // Kiểm tra hướng nhìn nhân vật
-            if (!isFacingRight && horizontal > 0f)
+        private void FixedUpdate()
+        {
+            if (isClimbing)
+            {
+                HandleClimbing();
+            }
+        }
+
+        #region Checking Methods
+        void HandleMovement()
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+            animator.SetBool("isGrounding", IsGrounded());
+        }
+
+        void CheckFlip()
+        {
+            if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
             {
                 Flip();
             }
-            else if (isFacingRight && horizontal < 0f)
-            {
-                Flip();
-            }
+        }
 
-            AnimationController();
-       }
-    }
+        private bool IsGrounded()
+        {
+            return Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        }
 
-    private void FixedUpdate()
-    {
-        if (isClimbing)
+        #endregion
+
+        #region Activites Methods
+
+        void UpdateAnimations()
+        {
+            animator.SetBool("isMoving", rb.velocity.magnitude > 0);
+        }
+
+        private void Flip()
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+
+        void HandleClimbing()
         {
             float climbInput = Input.GetAxisRaw("Vertical");
-            if (climbInput > 0f)
+            if (climbInput != 0)
             {
                 animator.SetTrigger("Climb");
+                rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
             }
-            rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
+            
         }
-    }
 
-    #region Checking Methods
-    private bool isGrounded()
-    {
-        bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        // Nếu nhân vật đang chạm đất, thì set trigger "isGrounding" trong animator thành true
-        animator.SetBool("isGrounding", grounded);
-        Debug.Log("isGrounding: " + grounded);
-        return grounded;
-    }
-
-    #endregion
-
-    #region Activiies Methods
-    private void Flip()
-    {
-        isFacingRight = !isFacingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
-    }
-    void AnimationController()
-    {
-        float speedMove = rb.velocity.magnitude;
-        if (speedMove > 0)
+        void takeAction()
         {
-            animator.SetBool("isMoving", true);
+            // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
         }
-        else
-        {
-            animator.SetBool("isMoving", false);
-        }
-    }
 
-    void takeAction()
-    {
-        // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
-    }
-
-    public void takeDamage()
-    {
-        if (!isHurting)
+        public void TakeDamage(int damage)
         {
+            if (isHurting) return;
+            if (hitSound != null) speaker.PlayOneShot(hitSound);
             isHurting = true;
-            Debug.Log("Trừ máu");
-            currentHealth -= 10;
+            currentHealth -= damage;
             Debug.Log("Current Health: " + currentHealth);
-            if (currentHealth <=0)
+
+            if (currentHealth <= 0)
             {
                 Debug.Log("Die");
                 Destroy(gameObject);
             }
-            StartCoroutine(TakeDamage());
+            else
+            {
+                StartCoroutine(TakeDamageRoutine());
+            }
         }
 
-    }
-
-    IEnumerator TakeDamage()
-    {
-        isHurting = true;
-        rb.AddForce(new Vector2(1f, 1f) * -5f, ForceMode2D.Impulse);
-        yield return new WaitForSeconds(2f);
-        isHurting = false;
-        yield return null;
-    }
-
-
-    #endregion
-
-    #region Input Action System
-    // Hàm Movement được gọi mỗi khi người chơi thực hiện hành động di chuyển.
-    public void Movement(InputAction.CallbackContext context)
-    {
-        // Đọc giá trị của trục x từ context của input và gán cho biến horizontal.
-        // Trục x được sử dụng để xác định hướng di chuyển ngang của nhân vật.
-        horizontal = context.ReadValue<Vector2>().x;
-    }
-
-    // Hàm Jump được gọi mỗi khi người chơi thực hiện hành động nhảy.
-    public void Jump(InputAction.CallbackContext context)
-    {
-        // Nếu hành động nhảy được thực hiện và nhân vật đang đứng trên mặt đất,
-        // thì thiết lập vận tốc theo hướng y cho nhân vật để nhảy lên.
-        if (context.performed && isGrounded())
+        IEnumerator TakeDamageRoutine()
         {
-            animator.SetTrigger("Jump");
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            rb.velocity = new Vector2(rb.velocity.x   * (isFacingRight ? -50f : 50f)  , 10f);
+            yield return new WaitForSeconds(2f);
+            isHurting = false;
         }
 
-        // Nếu hành động nhảy được hủy và vận tốc theo hướng y của nhân vật đang lớn hơn 0,
-        // thì giảm vận tốc theo hướng y của nhân vật để giảm độ cao của nhảy.
-        if (context.canceled && rb.velocity.y > 0f)
+
+        #endregion
+
+        // Hàm Movement được gọi mỗi khi người chơi thực hiện hành động di chuyển.
+        public void OnMove(InputAction.CallbackContext context)
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            // Đọc giá trị của trục x từ context của input và gán cho biến horizontal.
+            // Trục x được sử dụng để xác định hướng di chuyển ngang của nhân vật.
+            horizontal = context.ReadValue<Vector2>().x;
         }
-    }
 
-    public void Roll(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded() && !isRolling)
+        // Hàm Jump được gọi mỗi khi người chơi thực hiện hành động nhảy.
+        public void OnJump(InputAction.CallbackContext context)
         {
-            // Đánh dấu là nhân vật đang trong quá trình lăn
-            isRolling = true;
+            // Nếu hành động nhảy được thực hiện và nhân vật đang đứng trên mặt đất,
+            // thì thiết lập vận tốc theo hướng y cho nhân vật để nhảy lên.
+            if (context.performed && IsGrounded())
+            {
+                if (jumpSound != null) speaker.PlayOneShot(jumpSound);
+                animator.SetTrigger("Jump");
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            }
 
-            // Chạy animation roll
-            animator.Play("Roll");
-
-            // Xác định hướng lực sẽ được áp dụng (trong trường hợp này, theo hướng người chơi đang nhìn)
-            // Áp dụng lực 
-
-            transform.position += transform.right * (isFacingRight ? 1:-1) * dashPower * Time.deltaTime;
-
+            // Nếu hành động nhảy được hủy và vận tốc theo hướng y của nhân vật đang lớn hơn 0,
+            // thì giảm vận tốc theo hướng y của nhân vật để giảm độ cao của nhảy.
+            else if (context.canceled && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
         }
-        isRolling = false;
-    }
 
-    public void Fire(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded() && !isFiring)
+        public void OnRoll(InputAction.CallbackContext context)
         {
-            isFiring = true;
-            Debug.Log("Fire");
-            animator.Play("Fire");
+            if (context.performed && IsGrounded() && !isRolling)
+            {
+                if (rollSound != null) speaker.PlayOneShot(rollSound);
+                isRolling = true;
+                animator.SetBool("isClimbing",true);
+                animator.Play("Roll");
+                transform.position += transform.right * (isFacingRight ? 1 : -1) * dashPower * Time.deltaTime;
+                isRolling = false;
+            }
         }
-        isFiring = false;
-    }
-    #endregion
 
 
-    #region Collision Methods
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Thang")) // leo thang
+        [SerializeField] private Transform bowPosition;
+        [SerializeField] private GameObject arrowObj;
+        public void OnFire(InputAction.CallbackContext context)
         {
-            rb.gravityScale = 0f;
-            isClimbing = true;
+            if (!isFiring && !IsPlayingFireAnimation())
+            {
+                if (fireSound != null) speaker.PlayOneShot(fireSound);
+                isFiring = true;
+                Quaternion arrowRotation = isFacingRight ? Quaternion.identity : Quaternion.Euler(0, 180f, 0);
+                Instantiate(arrowObj, bowPosition.position, arrowRotation);
+                animator.Play("Fire");
+                StartCoroutine(WaitForAnimation());
+            }
         }
 
-        if (collision.CompareTag("Gai"))
+        private IEnumerator WaitForAnimation()
+        {
+            yield return new WaitForSeconds(0.1f);
+            while (IsPlayingFireAnimation())
+            {
+                yield return null;
+            }
+            isFiring = false;
+        }
+
+        private bool IsPlayingFireAnimation()
         {
 
+            return animator.GetCurrentAnimatorStateInfo(0).IsName("Fire");
         }
-    }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Thang")) // leo thang
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            rb.gravityScale = 5f;
-            isClimbing = false;
+            if (collision.CompareTag("Thang")) // Ladder
+            {
+                rb.gravityScale = 0f;
+                isClimbing = true;
+                animator.SetBool("isClimbing", true);
+            }
         }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Thang")) // Ladder
+            {
+                rb.gravityScale = 5f;
+                isClimbing = false;
+                animator.SetBool("isClimbing", false);
+            }
+        }
+
     }
-    #endregion
 }
+
+
