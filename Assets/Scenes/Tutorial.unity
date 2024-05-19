@@ -25490,7 +25490,7 @@ MonoBehaviour:
   dashPower: 50
   walkSound: {fileID: 0}
   idleSound: {fileID: 0}
-  JumpSound: {fileID: 0}
+  JumpSound: {fileID: 8300000, guid: 9ef8e2a187734bf4a8ec73a8cfa243c7, type: 3}
   rollSound: {fileID: 0}
 --- !u!114 &1919087512
 MonoBehaviour:
