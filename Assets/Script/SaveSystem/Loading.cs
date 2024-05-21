@@ -35,7 +35,7 @@ public class Loading : MonoBehaviour
     }
     private void SetText(int count)
     {
-        string name = CharacterCreation.playerList[count].username;
+        string name = CharacterCreation.playerList[count].playerName;
         DateTime created = CharacterCreation.playerList[count].timeCreated;
         playerName.text = name;
         timeCreated.text = created.ToShortDateString();
