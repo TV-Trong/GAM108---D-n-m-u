@@ -31,10 +31,15 @@ public class CharacterCreation : MonoBehaviour
                 Debug.LogError("Tên đã tồn tại, hãy chọn tên khác!");
                 return;
             }
+            if (user.username == "" || user.username == null)
+            {
+                Debug.LogError("Tên không được để trống!");
+                return;
+            }
         }
 
         PlayerData player = new PlayerData(playerName, timeCreated);
         playerList.Add(player);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Tutorial");
     }
 }
