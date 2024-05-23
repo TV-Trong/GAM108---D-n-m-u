@@ -37,10 +37,10 @@ public class CharacterCreation : MonoBehaviour
                 return;
             }
         }
-        StartNewCharavter();
+        StartNewCharacter();
     }
 
-    void StartNewCharavter()
+    void StartNewCharacter()
     {
         float timePlayed = 0;
         float health = 100;
