@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Thang
   - Gai
+  - Enemy
+  - BoxEnemy
   layers:
   - Default
   - TransparentFX
