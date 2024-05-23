@@ -5,12 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-namespace PlayerController
+namespace Player
 {
     public class PlayerMovement : MonoBehaviour
     {
         // Physics and Player Attributes
         private Rigidbody2D rb;
+        private Transform tranformPlayer;
         //
         [SerializeField] private Transform groundCheck; // Object con của player
         [SerializeField] private LayerMask groundLayer; // layer của nền đứng
@@ -18,18 +19,18 @@ namespace PlayerController
         private float horizontal;
         [SerializeField] private float speed = 8f;
         [SerializeField] private float jumpPower = 16f;
-        [SerializeField] private float dashPower = 50f;
+        [SerializeField] public float dashPower = 50f;
         [SerializeField] private float climbSpeed = 5f;
 
 
         // States
-        private bool isFacingRight = true;
-        private bool isRolling = false;
-        private bool isFiring = false;
-        private bool isMoving = true;
-        private bool isClimbing = false;
-        private bool isHurting = false;
-        private bool isActing = false;
+        public bool isFacingRight = true;
+        public bool isRolling = false;
+        public bool isFiring = false;
+        public bool isMoving = true;
+        public bool isClimbing = false;
+        public bool isHurting = false;
+        public bool isActing = false;
         // Animation
         private Animator animator;
 
@@ -53,6 +54,7 @@ namespace PlayerController
         {
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
+            tranformPlayer = GetComponent<Transform>();
         }
 
         // Update is called once per frame
@@ -89,7 +91,7 @@ namespace PlayerController
             }
         }
 
-        private bool IsGrounded()
+        public bool IsGrounded()
         {
             return Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
         }
@@ -100,7 +102,7 @@ namespace PlayerController
 
         void UpdateAnimations()
         {
-            animator.SetBool("isMoving", rb.velocity.magnitude > 0);
+            animator.SetBool("isMoving", horizontal != 0);
         }
 
         private void Flip()
@@ -111,15 +113,18 @@ namespace PlayerController
             transform.localScale = localScale;
         }
 
-        void HandleClimbing()
+        void HandleClimbing() //climb
         {
             float climbInput = Input.GetAxisRaw("Vertical");
-            if (climbInput != 0)
+            if (climbInput > 0)
             {
-                animator.SetTrigger("Climb");
-                rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
+                tranformPlayer.transform.position += Vector3.up * climbSpeed * Time.fixedDeltaTime;
             }
-            
+            else if (climbInput < 0)
+            {
+                tranformPlayer.transform.position += Vector3.down * climbSpeed * Time.fixedDeltaTime;
+            }
+
         }
 
         void takeAction()
@@ -152,7 +157,6 @@ namespace PlayerController
             yield return new WaitForSeconds(2f);
             isHurting = false;
         }
-
 
         #endregion
 
@@ -190,7 +194,6 @@ namespace PlayerController
             {
                 if (rollSound != null) speaker.PlayOneShot(rollSound);
                 isRolling = true;
-                animator.SetBool("isClimbing",true);
                 animator.Play("Roll");
                 transform.position += transform.right * (isFacingRight ? 1 : -1) * dashPower * Time.deltaTime;
                 isRolling = false;
@@ -229,26 +232,7 @@ namespace PlayerController
             return animator.GetCurrentAnimatorStateInfo(0).IsName("Fire");
         }
 
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Thang")) // Ladder
-            {
-                rb.gravityScale = 0f;
-                isClimbing = true;
-                animator.SetBool("isClimbing", true);
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Thang")) // Ladder
-            {
-                rb.gravityScale = 5f;
-                isClimbing = false;
-                animator.SetBool("isClimbing", false);
-            }
-        }
-
+        
     }
 }
 
