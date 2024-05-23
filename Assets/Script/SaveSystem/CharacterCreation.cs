@@ -26,15 +26,30 @@ public class CharacterCreation : MonoBehaviour
         timeCreated = DateTime.Now;
         foreach (PlayerData user in playerList)
         {
-            if (user.username == playerName)
+            if (user.playerName == playerName)
             {
                 Debug.LogError("Tên đã tồn tại, hãy chọn tên khác!");
                 return;
             }
+            if (user.playerName == "" || user.playerName == null)
+            {
+                Debug.LogError("Tên không được để trống!");
+                return;
+            }
         }
+        StartNewCharacter();
+    }
 
-        PlayerData player = new PlayerData(playerName, timeCreated);
+    void StartNewCharacter()
+    {
+        float timePlayed = 0;
+        float health = 100;
+        int coin = 0;
+        int soul = 0;
+        Vector2 position = new Vector2(-10.48f, -1.35f);
+        string scene = "Tutorial";
+        PlayerData player = new PlayerData(playerName, timeCreated, timePlayed, health, coin, soul, position, scene);
         playerList.Add(player);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(scene);
     }
 }
