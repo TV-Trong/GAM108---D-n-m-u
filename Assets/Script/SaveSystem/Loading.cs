@@ -11,7 +11,7 @@ public class Loading : MonoBehaviour
 {
     TextMeshProUGUI playerName, timeCreated;
     Button loadButton;
-    public GameObject playerInfo;
+    [SerializeField] GameObject playerInfo;
 
     private void Start()
     {
@@ -54,8 +54,8 @@ public class Loading : MonoBehaviour
         loadButton.gameObject.name = "panel";
     }
 
-    public void LoadGame()
+    private void LoadGame()
     {
-        SceneManager.LoadScene("CharacterCreation");
+        SceneManager.LoadScene(CharacterCreation.playerList[0].lastCurrentScene);
     }
 }
