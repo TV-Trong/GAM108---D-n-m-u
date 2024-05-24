@@ -18,4 +18,8 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Thoát game...");
         Application.Quit();
     }
+    public void GotoMainMenu()
+    {
+        SceneManager.LoadScene("MenuPlay");
+    }
 }
