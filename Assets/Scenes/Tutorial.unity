@@ -28313,19 +28313,10 @@ MonoBehaviour:
   isFacingRight: 1
   isRolling: 0
   isFiring: 0
-  isMoving: 1
   isClimbing: 0
   isHurting: 0
   isActing: 0
-  walkSound: {fileID: 0}
-  idleSound: {fileID: 0}
-  jumpSound: {fileID: 0}
-  rollSound: {fileID: 0}
-  hitSound: {fileID: 0}
-  fireSound: {fileID: 0}
   currentHealth: 100
-  bowPosition: {fileID: 399535181}
-  arrowObj: {fileID: 4014261024815583274, guid: 40be921b8d7415a4f9b0c3aa5594e27e, type: 3}
 --- !u!114 &1919087512
 MonoBehaviour:
   m_ObjectHideFlags: 0
