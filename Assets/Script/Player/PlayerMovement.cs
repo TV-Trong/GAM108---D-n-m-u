@@ -157,22 +157,16 @@ namespace Player
 
         #endregion
 
-        // Hàm Movement được gọi mỗi khi người chơi thực hiện hành động di chuyển.
         public void OnMove(InputAction.CallbackContext context)
         {
-            // Đọc giá trị của trục x từ context của input và gán cho biến horizontal.
-            // Trục x được sử dụng để xác định hướng di chuyển ngang của nhân vật.
 
                 speaker.PlayAudioRemune("Move");
                 horizontal = context.ReadValue<Vector2>().x;
             
         }
 
-        // Hàm Jump được gọi mỗi khi người chơi thực hiện hành động nhảy.
         public void OnJump(InputAction.CallbackContext context)
         {
-            // Nếu hành động nhảy được thực hiện và nhân vật đang đứng trên mặt đất,
-            // thì thiết lập vận tốc theo hướng y cho nhân vật để nhảy lên.
             if (context.performed && IsGrounded())
             {
                 speaker.PlayAudioOneShot("Jump");
@@ -180,23 +174,9 @@ namespace Player
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             }
 
-            // Nếu hành động nhảy được hủy và vận tốc theo hướng y của nhân vật đang lớn hơn 0,
-            // thì giảm vận tốc theo hướng y của nhân vật để giảm độ cao của nhảy.
             else if (context.canceled && rb.velocity.y > 0f)
             {
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            }
-        }
-
-        public void OnRoll(InputAction.CallbackContext context)
-        {
-            if (context.performed && IsGrounded() && !isRolling)
-            {
-                speaker.PlayAudioOneShot("Roll");
-                isRolling = true;
-                animator.Play("Roll");
-                transform.position += transform.right * (isFacingRight ? 1 : -1) * dashPower * Time.deltaTime;
-                isRolling = false;
             }
         }
 

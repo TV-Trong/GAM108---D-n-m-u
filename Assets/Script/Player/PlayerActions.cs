@@ -14,6 +14,7 @@ namespace Player
         private Animator animator;
         private bool isFiring = false;
         private PlayerMovement playerMovement;
+        private Rigidbody2D rb;
 
         private float dashDuration = 0.2f;
 
@@ -22,8 +23,24 @@ namespace Player
             speaker = FindObjectOfType<Speaker>();
             animator = GetComponent<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
+            rb = GetComponent<Rigidbody2D>();
         }
+/*
 
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if (context.performed && IsGrounded())
+            {
+                speaker.PlayAudioOneShot("Jump");
+                animator.SetTrigger("Jump");
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            }
+
+            else if (context.canceled && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
+        }*/
 
         public void OnFire(InputAction.CallbackContext context)
         {
