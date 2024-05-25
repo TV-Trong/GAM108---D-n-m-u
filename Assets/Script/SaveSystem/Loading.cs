@@ -9,17 +9,19 @@ using UnityEngine.UI;
 
 public class Loading : MonoBehaviour
 {
-    TextMeshProUGUI playerName, timeCreated;
+    TextMeshProUGUI playerName, timeCreated, timePlayed;
     Button loadButton;
     [SerializeField] GameObject playerInfo;
-
+    GameObject loading;
     private void Start()
     {
+        loading = GameObject.Find("BSLoading");
+        loading.SetActive(false);
         int count = 0;
-        foreach (PlayerData player in CharacterCreation.playerList)
+        foreach (PlayerFile player in DataManager.Instance.playersList)
         {
             SetInstance();
-            FindChildren();
+            FindChildren(count);
             SetText(count);
             ReplaceName();
             count++;
@@ -33,29 +35,41 @@ public class Loading : MonoBehaviour
         instance.transform.localPosition = Vector3.zero;
         instance.transform.localRotation = Quaternion.identity;
     }
-    private void SetText(int count)
+    private void SetText(int i)
     {
-        string name = CharacterCreation.playerList[count].playerName;
-        DateTime created = CharacterCreation.playerList[count].timeCreated;
+        string name = DataManager.Instance.playersList[i].playerName;
+        DateTime created = DataManager.Instance.playersList[i].timeCreated;
+        float played = DataManager.Instance.playersList[i].timePlayed / 60;
         playerName.text = name;
         timeCreated.text = created.ToShortDateString();
+        timePlayed.text = played.ToString("00.0") + " phút";
     }
-    private void FindChildren()
+    private void FindChildren(int i)
     {
         playerName = GameObject.Find("Name").GetComponentInChildren<TextMeshProUGUI>();
         timeCreated = GameObject.Find("Created").GetComponentInChildren<TextMeshProUGUI>();
+        timePlayed = GameObject.Find("Played").GetComponentInChildren<TextMeshProUGUI>();
         loadButton = GameObject.Find("Panel").GetComponentInChildren<Button>();
-        loadButton.onClick.AddListener(LoadGame);
+        loadButton.onClick.AddListener(() => StartLoadGame(i));
     }
     private void ReplaceName()
     {
         playerName.gameObject.name = "name";
-        timeCreated.gameObject.name = "time";
+        timeCreated.gameObject.name = "created";
+        timePlayed.gameObject.name = "played";
         loadButton.gameObject.name = "panel";
     }
-
-    private void LoadGame()
+    private void StartLoadGame(int i)
     {
-        SceneManager.LoadScene(CharacterCreation.playerList[0].lastCurrentScene);
+        StartCoroutine(LoadGame(i));
+    }
+    IEnumerator LoadGame(int i)
+    {
+        loading.SetActive(true);
+        
+        yield return new WaitForSeconds(2f);
+        DataManager.Instance.SetCurrentPlayer(DataManager.Instance.playersList[i]);
+        Debug.Log(DataManager.Instance.currentPlayer.playerName);
+        SceneManager.LoadScene(DataManager.Instance.playersList[i].lastCurrentScene);
     }
 }
