@@ -25,22 +25,7 @@ namespace Player
             playerMovement = GetComponent<PlayerMovement>();
             rb = GetComponent<Rigidbody2D>();
         }
-/*
 
-        public void OnJump(InputAction.CallbackContext context)
-        {
-            if (context.performed && IsGrounded())
-            {
-                speaker.PlayAudioOneShot("Jump");
-                animator.SetTrigger("Jump");
-                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
-            }
-
-            else if (context.canceled && rb.velocity.y > 0f)
-            {
-                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
-            }
-        }*/
 
         public void OnFire(InputAction.CallbackContext context)
         {

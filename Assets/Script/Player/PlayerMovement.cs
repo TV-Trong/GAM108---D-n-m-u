@@ -14,6 +14,7 @@ namespace Player
         // Physics and Player Attributes
         private Rigidbody2D rb;
         private Transform tranformPlayer;
+        private SpriteRenderer spriteRenderer;
         //
         [SerializeField] private Transform groundCheck; // Object con của player
         [SerializeField] private LayerMask groundLayer; // layer của nền đứng
@@ -61,6 +62,8 @@ namespace Player
             tranformPlayer = GetComponent<Transform>();
             speaker = FindObjectOfType<Speaker>();
             updateUI = FindObjectOfType<UpdateUI>();
+            spriteRenderer = GetComponent<SpriteRenderer>();
+
 
             //Spawn position
             lastPosition = DataManager.Instance.currentPlayer.lastPosition;
@@ -167,11 +170,25 @@ namespace Player
                 StartCoroutine(TakeDamageRoutine());
             }
         }
-
         IEnumerator TakeDamageRoutine()
         {
-            rb.velocity = new Vector2(rb.velocity.x   * (isFacingRight ? -50f : 50f)  , 10f);
-            yield return new WaitForSeconds(2f);
+            rb.velocity = new Vector2(rb.velocity.x * (isFacingRight ? -50f : 50f), 10f);
+
+            float duration = 2f;
+            float elapsed = 0f;
+            Color originalColor = spriteRenderer.color;
+
+            while (elapsed < duration)
+            {
+                float alpha = Mathf.PingPong(elapsed * 5f, 1f);
+                spriteRenderer.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+
+            spriteRenderer.color = originalColor;
+
             isHurting = false;
         }
 
