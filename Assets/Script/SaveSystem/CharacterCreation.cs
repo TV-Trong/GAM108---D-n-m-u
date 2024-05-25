@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -14,7 +15,6 @@ public class CharacterCreation : MonoBehaviour
     public string playerName;
     public DateTime timeCreated;
 
-    public static List<PlayerData> playerList = new List<PlayerData>();
     private void Start()
     {
         inputName = GetComponentInChildren<TMP_InputField>();
@@ -24,32 +24,43 @@ public class CharacterCreation : MonoBehaviour
     {
         playerName = inputName.text;
         timeCreated = DateTime.Now;
-        foreach (PlayerData user in playerList)
+        if(DataManager.Instance.playersList.Count > 0)
         {
-            if (user.playerName == playerName)
+            foreach (var user in DataManager.Instance.playersList)
             {
-                Debug.LogError("Tên đã tồn tại, hãy chọn tên khác!");
-                return;
-            }
-            if (user.playerName == "" || user.playerName == null)
-            {
-                Debug.LogError("Tên không được để trống!");
-                return;
+                if (user.playerName == playerName)
+                {
+                    Debug.LogError("Tên đã tồn tại, hãy chọn tên khác!");
+                    return;
+                }
             }
         }
+
+        if (playerName == "" || playerName == null)
+        {
+            Debug.LogError("Tên không được để trống!");
+            return;
+        }
+        if (playerName.Count() > 16)
+        {
+            Debug.LogError("Tên không được dài quá 16 ký tự!");
+            return;
+        }
+
         StartNewCharacter();
     }
 
     void StartNewCharacter()
     {
-        float timePlayed = 0;
-        float health = 100;
-        int coin = 0;
-        int soul = 0;
-        Vector2 position = new Vector2(-10.48f, -1.35f);
-        string scene = "Tutorial";
-        PlayerData player = new PlayerData(playerName, timeCreated, timePlayed, health, coin, soul, position, scene);
-        playerList.Add(player);
-        SceneManager.LoadScene(scene);
+        PlayerFile player = new PlayerFile(playerName);
+        DataManager.Instance.playersList.Add(player);
+        DataManager.Instance.SetCurrentPlayer(player);
+        //JsonManager.Instance.SaveData();
+        StartCoroutine(LoadGame());
+    }
+    IEnumerator LoadGame()
+    {
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene(DataManager.Instance.currentPlayer.lastCurrentScene);
     }
 }

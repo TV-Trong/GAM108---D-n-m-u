@@ -407,7 +407,7 @@ GameObject:
   - component: {fileID: 3853261600044008461}
   - component: {fileID: 8798777058843661294}
   m_Layer: 5
-  m_Name: Saved
+  m_Name: Played
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -460,7 +460,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 01/01/2000
+  m_text: 0h
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
   m_sharedMaterial: {fileID: -3492458260311434643, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
@@ -555,7 +555,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5012527359836570741}
   m_Father: {fileID: 0}
@@ -711,7 +711,7 @@ GameObject:
   - component: {fileID: 873519729818379439}
   - component: {fileID: 6291243622660728020}
   m_Layer: 5
-  m_Name: TimeSaved
+  m_Name: TimePlayed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -764,10 +764,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "L\u01B0u ng\xE0y:"
+  m_text: "\u0110\xE3 ch\u01A1i:"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
-  m_sharedMaterial: {fileID: -3492458260311434643, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0c703452bafca524dbcdb43ef52ba7b7, type: 2}
+  m_sharedMaterial: {fileID: -3652219218394385972, guid: 0c703452bafca524dbcdb43ef52ba7b7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
