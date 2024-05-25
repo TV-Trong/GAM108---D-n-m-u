@@ -45,3 +45,12 @@ public class PlayerFile
         this.lastCurrentScene = lastCurrentScene;
     }
 }
+[System.Serializable]
+public class PlayerList
+{
+    public List<PlayerFile> savedList;
+    public PlayerList()
+    {
+        savedList = DataManager.Instance.playersList;
+    }
+}
