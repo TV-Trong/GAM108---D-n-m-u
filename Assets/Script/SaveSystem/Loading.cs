@@ -39,10 +39,10 @@ public class Loading : MonoBehaviour
     {
         string name = DataManager.Instance.playersList[i].playerName;
         DateTime created = DataManager.Instance.playersList[i].timeCreated;
-        float played = DataManager.Instance.playersList[i].timePlayed;
+        float played = DataManager.Instance.playersList[i].timePlayed / 60;
         playerName.text = name;
         timeCreated.text = created.ToShortDateString();
-        timePlayed.text = played.ToString("00.0") + " h";
+        timePlayed.text = played.ToString("00.0") + " phút";
     }
     private void FindChildren(int i)
     {

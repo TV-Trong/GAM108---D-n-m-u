@@ -22,10 +22,10 @@ public class PlayerFile
     public float timePlayed;
     public Vector2 lastPosition;
     public string lastCurrentScene;
-    public PlayerFile(string name)
+    public PlayerFile(string name) //Danh cho tao nhan vat
     {
         playerName = name;
-        health = 0;
+        health = 100;
         coin = 0;
         soul = 0;
         timeCreated = DateTime.Now;
@@ -33,18 +33,32 @@ public class PlayerFile
         lastPosition = new Vector2(-10.48f, -1.35f);
         lastCurrentScene = "Tutorial";
     }
-    public PlayerFile(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
+    //public PlayerFile(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
+    //{
+    //    this.playerName = playerName;
+    //    this.timeCreated = timeCreated;
+    //    this.timePlayed = timePlayed;
+    //    this.health = health;
+    //    this.coin = coin;
+    //    this.soul = soul;
+    //    this.lastPosition = lastPosition;
+    //    this.lastCurrentScene = lastCurrentScene;
+    //}
+    public void TakeDamage(float damage)
     {
-        this.playerName = playerName;
-        this.timeCreated = timeCreated;
-        this.timePlayed = timePlayed;
-        this.health = health;
-        this.coin = coin;
-        this.soul = soul;
-        this.lastPosition = lastPosition;
-        this.lastCurrentScene = lastCurrentScene;
+        health -= damage;
+    }
+    public void CoinUp()
+    {
+        coin += 1;
+    }
+    public void SetTimePlayed(float deltaTime)
+    {
+        timePlayed += deltaTime;
     }
 }
+
+
 [System.Serializable]
 public class PlayerList
 {

@@ -3,9 +3,10 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
+    UpdateUI updateUI;
     void Start()
     {
-        // Thiết lập ban đầu nếu cần
+        updateUI = FindObjectOfType<UpdateUI>();
     }
 
     void Update()
@@ -17,6 +18,8 @@ public class Coin : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
+            DataManager.Instance.currentPlayer.CoinUp();
+            updateUI.UpdateValue();
             Destroy(gameObject);    
         }
     }

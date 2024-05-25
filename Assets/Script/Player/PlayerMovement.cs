@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace Player
 {
@@ -40,24 +42,37 @@ namespace Player
         //
 
         // Health Manager
-        [SerializeField] private int currentHealth;
-        //
+        //[SerializeField] private float currentHealth;
+
+        //Spawn location
+        Vector2 lastPosition;
+
+
+        //Play time
+        float timePlayed;
+
+        //UI
+        UpdateUI updateUI;
+
         private void Start()
         {
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
             tranformPlayer = GetComponent<Transform>();
             speaker = FindObjectOfType<Speaker>();
+            updateUI = FindObjectOfType<UpdateUI>();
+
+            //Spawn position
+            lastPosition = DataManager.Instance.currentPlayer.lastPosition;
+            gameObject.transform.position = lastPosition;
         }
 
         // Update is called once per frame
         void Update()
         {
-
             HandleMovement();
             CheckFlip();
             UpdateAnimations();
-            
         }
 
         private void FixedUpdate()
@@ -66,6 +81,9 @@ namespace Player
             {
                 HandleClimbing();
             }
+
+            //Tinh thoi gian choi
+            DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
         }
 
         #region Checking Methods
@@ -134,10 +152,12 @@ namespace Player
             if (isHurting) return;
             speaker.PlayAudioOneShot("Hit");
             isHurting = true;
-            currentHealth -= damage;
-            Debug.Log("Current Health: " + currentHealth);
 
-            if (currentHealth <= 0)
+            DataManager.Instance.currentPlayer.TakeDamage(damage);
+            updateUI.UpdateValue();
+            //Debug.Log("Current Health: " + currentHealth);
+
+            if (DataManager.Instance.currentPlayer.health <= 0)
             {
                 Debug.Log("Die");
                 Destroy(gameObject);
@@ -180,7 +200,10 @@ namespace Player
             }
         }
 
-        
+        public void SavePosition()
+        {
+            DataManager.Instance.currentPlayer.lastPosition = transform.position;
+        }
     }
 }
 

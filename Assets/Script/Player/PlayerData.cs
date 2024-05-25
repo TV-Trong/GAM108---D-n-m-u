@@ -27,37 +27,33 @@ public class PlayerData : Singleton<PlayerData>
         data.lastCurrentScene = lastCurrentScene;
         return data;
     }
-    public string GetName()
+    public void SetName(string playerName)
     {
-        return playerName;
+        this.playerName = playerName;
     }
-    public float GetHealth()
+    public void SetHealth(float health)
     {
-        return health;
+        this.health = health;
     }
-    public int GetCoin()
+    public void SetCoin(int coin)
     {
-        return coin;
+        this.coin = coin;
     }
-    public int GetSoul()
+    public void SetSoul(int soul)
     {
-        return soul;
+        this.soul = soul;
     }
-    public DateTime GetDateCreated()
+    public void SetTimePlayed(float timePlayed)
     {
-        return timeCreated;
+        this.timePlayed = timePlayed;
     }
-    public float GetTimePlayed()
+    public void SetLastPosition(Vector2 lastPosition)
     {
-        return timePlayed;
+        this.lastPosition = lastPosition;
     }
-    public Vector2 GetLastPosition()
+    public void SetLastScene(string lastCurrentScene)
     {
-        return lastPosition;
-    }
-    public string GetLastScene()
-    {
-        return lastCurrentScene;
+        this.lastCurrentScene = lastCurrentScene;
     }
 
     public void SetData(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
