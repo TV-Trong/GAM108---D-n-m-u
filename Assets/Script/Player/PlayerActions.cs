@@ -10,29 +10,46 @@ namespace Player
     {
         public Transform bowPosition;
         public GameObject arrowObj;
-        public AudioClip fireSound;
-        private AudioSource speaker;
+        private Speaker speaker;
         private Animator animator;
         private bool isFiring = false;
         private PlayerMovement playerMovement;
+        private Rigidbody2D rb;
 
         private float dashDuration = 0.2f;
 
         private void Start()
         {
-            speaker = GetComponent<AudioSource>();
+            speaker = FindObjectOfType<Speaker>();
             animator = GetComponent<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
+            rb = GetComponent<Rigidbody2D>();
         }
+/*
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if (context.performed && IsGrounded())
+            {
+                speaker.PlayAudioOneShot("Jump");
+                animator.SetTrigger("Jump");
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            }
+
+            else if (context.canceled && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
+        }*/
 
         public void OnFire(InputAction.CallbackContext context)
         {
             if (!isFiring && !IsPlayingFireAnimation())
             {
-                if (fireSound != null) speaker.PlayOneShot(fireSound);
+                speaker.PlayAudioOneShot("Fire");
                 isFiring = true;
                 Quaternion arrowRotation = playerMovement.isFacingRight ? Quaternion.identity : Quaternion.Euler(0, 180f, 0);
-                Instantiate(arrowObj, bowPosition.position, arrowRotation);
+                Instantiate(arrowObj, bowPosition.position, arrowRotation /*Quaternion.identity*/);
                 animator.Play("Fire");
                 StartCoroutine(WaitForAnimation());
             }
@@ -67,7 +84,7 @@ namespace Player
         {
             playerMovement.isRolling = true;
             animator.Play("Roll");
-
+            speaker.PlayAudioOneShot("Roll");
             float elapsedTime = 0f;
             Vector3 moveDirection = transform.right * (playerMovement.isFacingRight ? 1 : -1) * playerMovement.dashPower;
 
