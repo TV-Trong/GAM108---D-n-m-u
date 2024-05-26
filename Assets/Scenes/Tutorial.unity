@@ -168,10 +168,10 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -363,6 +363,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioClips:
   - {fileID: 8300000, guid: 9ef8e2a187734bf4a8ec73a8cfa243c7, type: 3}
+  - {fileID: 8300000, guid: b464ff9c385642944b029efc4a7edfe0, type: 3}
+  - {fileID: 8300000, guid: 882036b2c175bef4a99415d9b3a832ae, type: 3}
+  - {fileID: 8300000, guid: 18ab07cfad1825248af9eb0ed1708f59, type: 3}
+  - {fileID: 8300000, guid: 3fa750cbe82d0f74d9dba06ec8760783, type: 3}
+  - {fileID: 8300000, guid: 882036b2c175bef4a99415d9b3a832ae, type: 3}
   speakerOneShot: {fileID: 203568192}
   speakerRemune: {fileID: 203568191}
 --- !u!1 &399535180
@@ -26639,6 +26644,7 @@ MonoBehaviour:
   isFiring: 0
   isHurting: 0
   isActing: 0
+  isMoving: 0
 --- !u!114 &1919087512
 MonoBehaviour:
   m_ObjectHideFlags: 0

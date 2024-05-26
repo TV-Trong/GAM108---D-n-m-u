@@ -31,10 +31,25 @@ public class Speaker : MonoBehaviour
             speakerRemune.Play();
         }
     }
+    
+    public void MuteAudioRemune()
+    {
+        if (speakerRemune != null)
+        {
+            if (!speakerRemune.mute)
+            {
+                speakerRemune.mute = true;
+            }
+        }
+    }
 
     public void StopAudioRemune()
     {
-        speakerRemune.Stop();
-        currentClip = null;
+        if (speakerRemune != null)
+        {
+            speakerRemune.Stop();
+            currentClip = null;
+        }
+
     }
 }

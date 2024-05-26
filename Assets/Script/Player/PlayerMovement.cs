@@ -33,6 +33,7 @@ namespace Player
         public bool isFiring = false;
         public bool isHurting = false;
         public bool isActing = false;
+        public bool isMoving = false;
         // Animation
         private Animator animator;
 
@@ -77,8 +78,23 @@ namespace Player
             HandleMovement();
             CheckFlip();
             UpdateAnimations();
-            
-            
+
+            if (isMove() && IsGrounded())
+            {
+                if (!isMoving)
+                {
+                    isMoving = true;
+                    speaker.PlayAudioRemune("Walk"); 
+                }
+            }
+            else
+            {
+                if (isMoving)
+                {
+                    isMoving = false;
+                    speaker.StopAudioRemune();
+                }
+            }
         }
 
         private void FixedUpdate()
@@ -145,7 +161,8 @@ namespace Player
         {
             bool nearLadder = IsNearLadder();
             float climbInput = Input.GetAxisRaw("Vertical");
-            if (nearLadder && Mathf.Abs(climbInput) > 0f)
+
+            if (nearLadder)
             {
                 rb.gravityScale = 0f;
                 rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
@@ -154,8 +171,9 @@ namespace Player
             {
                 rb.gravityScale = 5f;
             }
-        }
 
+
+        }
         public void TakeDamage(int damage)
         {
             if (isHurting) return;
@@ -201,11 +219,8 @@ namespace Player
         #endregion
 
         public void OnMove(InputAction.CallbackContext context)
-        {
-
-                speaker.PlayAudioRemune("Move");
+        {             
                 horizontal = context.ReadValue<Vector2>().x;
-            
         }
 
         public void OnJump(InputAction.CallbackContext context)
