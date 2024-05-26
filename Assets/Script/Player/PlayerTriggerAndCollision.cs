@@ -19,22 +19,12 @@ namespace Player
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Thang")) // Ladder
-            {
-                rb.gravityScale = 0f;
-                playerMovement.isClimbing = true;
-                animator.SetBool("isClimbing", true);
-            }
+            
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("Thang")) // Ladder
-            {
-                rb.gravityScale = 5f;
-                playerMovement.isClimbing = false;
-                animator.SetBool("isClimbing", false);
-            }
+
         }
     }
 

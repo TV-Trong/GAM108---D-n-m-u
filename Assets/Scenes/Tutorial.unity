@@ -361,7 +361,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 818e38d730fe63c4188287ae75fddb6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioClips: []
+  audioClips:
+  - {fileID: 8300000, guid: 9ef8e2a187734bf4a8ec73a8cfa243c7, type: 3}
   speakerOneShot: {fileID: 203568192}
   speakerRemune: {fileID: 203568191}
 --- !u!1 &399535180
@@ -612,7 +613,7 @@ GameObject:
   - component: {fileID: 562621910}
   - component: {fileID: 562621909}
   - component: {fileID: 562621908}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: "C\u1EA7u thang"
   m_TagString: Thang
   m_Icon: {fileID: 0}
@@ -26626,6 +26627,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  ladderLayer:
+    serializedVersion: 2
+    m_Bits: 128
   speed: 8
   jumpPower: 16
   dashPower: 10
@@ -26633,7 +26637,6 @@ MonoBehaviour:
   isFacingRight: 1
   isRolling: 0
   isFiring: 0
-  isClimbing: 0
   isHurting: 0
   isActing: 0
 --- !u!114 &1919087512

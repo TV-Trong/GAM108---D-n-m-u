@@ -28424,6 +28424,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  ladderLayer:
+    serializedVersion: 2
+    m_Bits: 128
   speed: 8
   jumpPower: 16
   dashPower: 10
@@ -28434,7 +28437,7 @@ MonoBehaviour:
   isClimbing: 0
   isHurting: 0
   isActing: 0
-  currentHealth: 100
+  isNearLadder: 0
 --- !u!114 &1919087512
 MonoBehaviour:
   m_ObjectHideFlags: 0

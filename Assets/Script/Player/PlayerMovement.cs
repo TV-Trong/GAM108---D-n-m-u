@@ -18,6 +18,7 @@ namespace Player
         //
         [SerializeField] private Transform groundCheck; // Object con của player
         [SerializeField] private LayerMask groundLayer; // layer của nền đứng
+        [SerializeField] private LayerMask ladderLayer; // layer của cầu thang
 
         private float horizontal;
         [SerializeField] private float speed = 8f;
@@ -30,7 +31,6 @@ namespace Player
         public bool isFacingRight = true;
         public bool isRolling = false;
         public bool isFiring = false;
-        public bool isClimbing = false;
         public bool isHurting = false;
         public bool isActing = false;
         // Animation
@@ -73,17 +73,20 @@ namespace Player
         // Update is called once per frame
         void Update()
         {
+
             HandleMovement();
             CheckFlip();
             UpdateAnimations();
+            
+            
         }
 
         private void FixedUpdate()
         {
-            if (isClimbing)
-            {
-                HandleClimbing();
-            }
+            animator.SetBool("isClimbing", IsNearLadder());
+            Debug.Log("IdGrounded: " + IsGrounded());
+            Debug.Log("isNearLadder: " + IsNearLadder());
+            HandleClimbing();
 
             //Tinh thoi gian choi
             DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
@@ -92,7 +95,7 @@ namespace Player
         #region Checking Methods
         void HandleMovement()
         {
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);            
             animator.SetBool("isGrounding", IsGrounded());
         }
 
@@ -104,9 +107,14 @@ namespace Player
             }
         }
 
-        public bool IsGrounded()
+        public bool IsGrounded() // kiểm tra nhân vật có đứng trên nền không
         {
             return Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        }
+
+        public bool IsNearLadder() // kiểm tra nhân vật có đứng ngay cầu thang không
+        {
+            return Physics2D.OverlapCircle(transform.position, 0.3f, ladderLayer);
         }
 
         public bool isMove()
@@ -121,6 +129,8 @@ namespace Player
         void UpdateAnimations()
         {
             animator.SetBool("isMoving", horizontal != 0);
+            float verticalSpeed = rb.velocity.magnitude;
+            animator.SetFloat("Magnitude", verticalSpeed);
         }
 
         private void Flip()
@@ -131,23 +141,19 @@ namespace Player
             transform.localScale = localScale;
         }
 
-        void HandleClimbing() //climb
+        void HandleClimbing()
         {
+            bool nearLadder = IsNearLadder();
             float climbInput = Input.GetAxisRaw("Vertical");
-            if (climbInput != 0)
+            if (nearLadder && Mathf.Abs(climbInput) > 0f)
             {
-                speaker.PlayAudioOneShot("Climb");
-                if (climbInput > 0)
-                {
-                    tranformPlayer.transform.position += Vector3.up * climbSpeed * Time.fixedDeltaTime;
-                }
-                else if (climbInput < 0)
-                {
-                    tranformPlayer.transform.position += Vector3.down * climbSpeed * Time.fixedDeltaTime;
-                }
+                rb.gravityScale = 0f;
+                rb.velocity = new Vector2(rb.velocity.x, climbInput * climbSpeed);
             }
-            
-
+            else
+            {
+                rb.gravityScale = 5f;
+            }
         }
 
         public void TakeDamage(int damage)
