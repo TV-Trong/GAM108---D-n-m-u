@@ -2,69 +2,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class Bird : EnemyMain
 {
-    [SerializeField] private GameObject boxPOS;
+    [SerializeField] private Transform targetA;
+    [SerializeField] private Transform targetB;
+
+    private Transform currentTarget;
+    //private float changeTargetTime = 2f;
+
+
     private GameObject playerPOS;
-
-    private Vector3 targetPosition;
-    private bool isMovingUp = true;
-    private float moveRadius = 10f;
-    private float changeTargetTime = 2f;
-
     void Start()
     {
-        health = 1;
-        speed = 5;
+        health = 1f;
         damage = 3;
+        speed = 5f;
         isDetectedPlayer = false;
+        currentTarget = targetA;
 
         playerPOS = GameObject.Find("Player");
 
         if (playerPOS == null)
         {
-            Debug.LogError("Player object not found");
+            Debug.Log("Player cant found");
             return;
         }
 
-        SetRandomTargetPosition();
-        StartCoroutine(MoveCoroutine());
+        StartCoroutine(MainCoroutine());
     }
-
-    void Update()
-    {
-    }
-
-    private void FixedUpdate()
-    {
-    }
-
-    IEnumerator MoveCoroutine()
+    
+    IEnumerator MainCoroutine()
     {
         while (true)
         {
             if (isDetectedPlayer)
             {
-                targetPosition = new Vector2(transform.position.x, playerPOS.transform.position.y);
+                StartCoroutine(DetectedPlayerCoroutine());
+                yield break;
             }
             else
             {
-
-                SetRandomTargetPosition();
-
+                yield return StartCoroutine(MoveCoroutine());
             }
-
-            yield return new WaitForSeconds(changeTargetTime);
         }
     }
 
-    private void SetRandomTargetPosition()
+    IEnumerator DetectedPlayerCoroutine()
     {
-        float randomX = Random.Range(-moveRadius, moveRadius);
-        float randomY = Random.Range(-moveRadius, moveRadius);
-        targetPosition = new Vector3(boxPOS.transform.position.x + randomX, boxPOS.transform.position.y + randomY, transform.position.z);
-        Debug.Log("Target position:" + targetPosition);
+        while (Vector3.Distance(transform.position, playerPOS.transform.position) > 1f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, playerPOS.transform.position, speed * Time.deltaTime);
+            yield return null;
+        }
+    }
+    IEnumerator MoveCoroutine()
+    {
+        while (true)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget.position, speed * Time.deltaTime);
+
+            if (Vector3.Distance(transform.position, currentTarget.position) < 0.1f)
+            {
+                SwitchTarget();
+            }
+
+
+            yield return null;
+        }
+        
+    }
+
+    void SwitchTarget()
+    {
+        currentTarget = (currentTarget == targetA) ? targetB : targetA;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -72,14 +84,6 @@ public class Bird : EnemyMain
         if (collision.gameObject.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("BoxEnemy"))
-        {
-            SetRandomTargetPosition();
         }
     }
 }

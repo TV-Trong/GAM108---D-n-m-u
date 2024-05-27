@@ -1,6 +1,7 @@
 ﻿using Player;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -9,15 +10,15 @@ public class Slime : EnemyMain
     [SerializeField] private GameObject boxPOS;
     [SerializeField] private GameObject playerPOS;
 
-    private Rigidbody2D rb;
-
-    private bool isMovingRight = true;
     void Start()
     {
-        health = 2;
+        health = 4;
         speed = 5;
-        damage = 1;
+        damage = 2;
         isDetectedPlayer = false;
+        isMovingRight = true;
+       
+       
 
         playerPOS = GameObject.Find("Player");
 
@@ -27,18 +28,16 @@ public class Slime : EnemyMain
             return;
         }
 
-        rb = GetComponent<Rigidbody2D>();
 
+
+        rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(MoveCoroutine());
     }
-    void Update()
+    void Flip()
     {
-        
-    }
-
-    private void FixedUpdate()
-    {
-        
+        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * 1f, 1);
     }
 
     IEnumerator MoveCoroutine()
@@ -47,12 +46,12 @@ public class Slime : EnemyMain
         {
             if (isDetectedPlayer)
             {
-                // Change direction based on the player's position
                 isMovingRight = playerPOS.transform.position.x > transform.position.x;
+                
             }
-
-            // Move normally (patrolling behavior)
             float direction = isMovingRight ? 1f : -1f;
+            Flip();
+            anim.Play("Jump");
             rb.AddForce(new Vector2(direction * speed, 10f), ForceMode2D.Impulse);
 
             yield return new WaitForSeconds(1f);
