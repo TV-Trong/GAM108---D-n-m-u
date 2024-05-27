@@ -49,7 +49,7 @@ public class Loading : MonoBehaviour
         playerName = GameObject.Find("Name").GetComponentInChildren<TextMeshProUGUI>();
         timeCreated = GameObject.Find("Created").GetComponentInChildren<TextMeshProUGUI>();
         timePlayed = GameObject.Find("Played").GetComponentInChildren<TextMeshProUGUI>();
-        loadButton = GameObject.Find("Panel").GetComponentInChildren<Button>();
+        loadButton = GameObject.Find("PlayerPanel").GetComponentInChildren<Button>();
         loadButton.onClick.AddListener(() => StartLoadGame(i));
     }
     private void ReplaceName()

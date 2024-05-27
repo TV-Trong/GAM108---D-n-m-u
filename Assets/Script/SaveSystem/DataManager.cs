@@ -1,15 +1,38 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using UnityEngine;
+using System.IO;
 
 public class DataManager : Singleton<DataManager>
 {
     public List<PlayerFile> playersList = new List<PlayerFile>();
     public PlayerFile currentPlayer;
+    private void Start()
+    {
+        StartCoroutine(LoadData());
+    }
     public void SetCurrentPlayer(PlayerFile player)
     {
         currentPlayer = player;
+    }
+    IEnumerator LoadData()
+    {
+        string filePath = Application.persistentDataPath + "/Saves/" + "saveFile.sav"; 
+        if (File.Exists(filePath))
+        {
+            string json = File.ReadAllText(filePath);
+            PlayerList dataList = JsonConvert.DeserializeObject<PlayerList>(json);
+            Debug.Log("Lấy dữ liệu thành công!");
+            playersList = dataList.savedList;
+            yield return null;
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy dữ liệu!");
+            yield return null;
+        }
     }
 }
 public class PlayerFile
@@ -59,7 +82,7 @@ public class PlayerFile
 }
 
 
-[System.Serializable]
+[Serializable]
 public class PlayerList
 {
     public List<PlayerFile> savedList;
