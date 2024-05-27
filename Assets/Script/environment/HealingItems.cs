@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealingItem : MonoBehaviour
 {
     // Lượng máu hồi lại khi nhân vật tiếp xúc với vật phẩm
-    public int healingAmount = 2;
+    public int healingAmount = 20;
 
     // Hàm này sẽ được gọi khi một collider khác chạm vào collider của vật phẩm này
     private void OnTriggerEnter2D(Collider2D other)

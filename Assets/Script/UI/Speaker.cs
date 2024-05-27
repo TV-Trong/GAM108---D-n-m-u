@@ -19,6 +19,7 @@ public class Speaker : MonoBehaviour
         Debug.Log("Action: " + name);
         AudioClip audioClip = audioClips.Find(x =>  x.name == name);
         if (audioClip != null) speakerOneShot.PlayOneShot(audioClip);
+        else Debug.Log("No Sound");
     }
 
     public void PlayAudioRemune(string name) // Play audio duy trì 

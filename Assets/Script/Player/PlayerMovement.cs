@@ -218,7 +218,8 @@ namespace Player
 
         public void Heal(int healingAmount)
         {
-            //
+            DataManager.Instance.currentPlayer.health = Mathf.Clamp(DataManager.Instance.currentPlayer.health + healingAmount, 0, 100);
+            updateUI.UpdateValue();
             Debug.Log("Heal");
         }
 
@@ -233,7 +234,7 @@ namespace Player
         {
             if (context.performed && IsGrounded())
             {
-                speaker.PlayAudioOneShot("Jump");
+                speaker.PlayAudioOneShot("PlayerJump");
                 animator.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             }

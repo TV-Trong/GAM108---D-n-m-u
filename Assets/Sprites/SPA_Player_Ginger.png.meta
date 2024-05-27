@@ -283,9 +283,9 @@ TextureImporter:
       name: SPA_Player_Ginger_5
       rect:
         serializedVersion: 2
-        x: 0
+        x: 4
         y: 152
-        width: 37
+        width: 22
         height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -304,9 +304,9 @@ TextureImporter:
       name: SPA_Player_Ginger_6
       rect:
         serializedVersion: 2
-        x: 37
+        x: 40
         y: 152
-        width: 37
+        width: 24
         height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -325,9 +325,9 @@ TextureImporter:
       name: SPA_Player_Ginger_7
       rect:
         serializedVersion: 2
-        x: 74
+        x: 80
         y: 152
-        width: 37
+        width: 22
         height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -346,9 +346,9 @@ TextureImporter:
       name: SPA_Player_Ginger_8
       rect:
         serializedVersion: 2
-        x: 111
+        x: 118
         y: 152
-        width: 37
+        width: 22
         height: 38
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

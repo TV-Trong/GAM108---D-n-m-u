@@ -22,11 +22,12 @@ public class Coin : MonoBehaviour
         {
             DataManager.Instance.currentPlayer.CoinUp();
             updateUI.UpdateValue();
-            Destroy(gameObject);    
+            PickUp();
+            Destroy(gameObject, speaker.clip.length);    
         }
     }
 
-    private void OnDestroy()
+    private void PickUp()
     {
         speaker.Play();
     }
