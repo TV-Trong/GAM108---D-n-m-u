@@ -6,11 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    PlayerMovement playerMovement;
     public void NewGame()
     {
         SceneManager.LoadScene("CharacterCreation");
     }
-    public void LoadGame()
+    public void LoadGame()  
     {
         SceneManager.LoadScene("ContinuePlaying");
     }
@@ -25,6 +26,8 @@ public class SceneLoader : MonoBehaviour
     }
     public void SaveAndGotoMain()
     {
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        playerMovement.SavePosition();
         JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
     }

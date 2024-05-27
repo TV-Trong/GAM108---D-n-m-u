@@ -53,16 +53,18 @@ public class PlayerFile
         soul = 0;
         timeCreated = DateTime.Now;
         timePlayed = 0;
-        lastPosition = new Vector2(-10.48f, -1.35f);
         HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
         if (admin.Contains(name))
         {
             lastCurrentScene = "Tutorial"; //Kiem tra neu ten la 1 trong so admin thi load scene Tutorial
+            lastPosition = new Vector2(-10.48f, -1.35f);
         }
         else
         {
             lastCurrentScene = "Map 1";
+            lastPosition = new Vector2(-36f, 0f);
         }
+
     }
     //public PlayerFile(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
     //{

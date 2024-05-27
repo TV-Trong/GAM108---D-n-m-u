@@ -59,6 +59,7 @@ public class CharacterCreation : MonoBehaviour
         PlayerFile player = new PlayerFile(playerName);
         DataManager.Instance.playersList.Add(player);
         DataManager.Instance.SetCurrentPlayer(player);
+        JsonManager.Instance.SaveData();
         StartCoroutine(LoadGame());
     }
     IEnumerator LoadGame()

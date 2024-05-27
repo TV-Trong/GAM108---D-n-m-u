@@ -75,6 +75,7 @@ public class Loading : MonoBehaviour
     {
         DataManager.Instance.playersList.RemoveAt(i);
         JsonManager.Instance.SaveData();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     IEnumerator LoadGame(int i)
     {
