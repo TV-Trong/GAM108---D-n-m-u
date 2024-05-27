@@ -9,7 +9,7 @@ TagManager:
   - Enemy
   - BoxEnemy
   - Coin
-  - Apple
+  - Fruits
   layers:
   - Default
   - TransparentFX
