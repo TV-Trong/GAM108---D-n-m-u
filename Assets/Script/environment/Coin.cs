@@ -4,14 +4,16 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     UpdateUI updateUI;
+    private AudioSource speaker;
     void Start()
     {
         updateUI = FindObjectOfType<UpdateUI>();
+        speaker = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        // Logic cần cập nhật liên tục (nếu có)
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -22,5 +24,10 @@ public class Coin : MonoBehaviour
             updateUI.UpdateValue();
             Destroy(gameObject);    
         }
+    }
+
+    private void OnDestroy()
+    {
+        speaker.Play();
     }
 }
