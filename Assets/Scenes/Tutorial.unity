@@ -1587,6 +1587,7 @@ GameObject:
   - component: {fileID: 1232846525}
   - component: {fileID: 1232846527}
   - component: {fileID: 1232846526}
+  - component: {fileID: 1232846528}
   m_Layer: 0
   m_Name: "Phong n\u1EC1n"
   m_TagString: Untagged
@@ -8292,6 +8293,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &1232846528
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232846524}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 949ee9616401ad94e954eea8ffee6d2c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1365646511
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - BoxEnemy
   - Coin
+  - Apple
   layers:
   - Default
   - TransparentFX

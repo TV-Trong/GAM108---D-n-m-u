@@ -7,7 +7,7 @@ public class Coin : MonoBehaviour
     void Start()
     {
         updateUI = FindObjectOfType<UpdateUI>();
-    }
+                          }
 
     void Update()
     {
