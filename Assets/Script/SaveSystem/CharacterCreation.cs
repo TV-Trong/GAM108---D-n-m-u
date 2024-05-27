@@ -15,8 +15,12 @@ public class CharacterCreation : MonoBehaviour
     public string playerName;
     public DateTime timeCreated;
 
+    GameObject loading;
     private void Start()
     {
+        loading = GameObject.Find("BSLoading");
+        loading.SetActive(false);
+
         inputName = GetComponentInChildren<TMP_InputField>();
     }
 
@@ -55,11 +59,11 @@ public class CharacterCreation : MonoBehaviour
         PlayerFile player = new PlayerFile(playerName);
         DataManager.Instance.playersList.Add(player);
         DataManager.Instance.SetCurrentPlayer(player);
-        //JsonManager.Instance.SaveData();
         StartCoroutine(LoadGame());
     }
     IEnumerator LoadGame()
     {
+        loading.SetActive(true);
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene(DataManager.Instance.currentPlayer.lastCurrentScene);
     }

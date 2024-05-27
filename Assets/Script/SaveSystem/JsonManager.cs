@@ -16,7 +16,6 @@ public class JsonManager : MonoBehaviour
     {
         if (!Directory.Exists(fileDir))
         {
-            //File.Delete(filePath);
             Directory.CreateDirectory(fileDir);
         }
         PlayerList dataList = new PlayerList();
