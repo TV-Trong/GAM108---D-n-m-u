@@ -1,165 +1,210 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
-public class PlayerMovement : MonoBehaviour
+namespace Player
 {
-    // Physics
-    private Rigidbody2D rb;
-    //
-    [SerializeField] private Transform groundCheck; // Object con của player
-    [SerializeField] private LayerMask groundLayer; // layer của nền đứng
-
-    private float horizontal;
-    [SerializeField] private float speed = 8f;
-    [SerializeField] private float jumpPower = 16f;
-    [SerializeField] private float dashPower = 50f;
-    private bool isFacingRight = true;
-
-
-    private bool isRolling = false;
-    private bool isFiring = false;
-    private bool isMoving = true;
-    // Animation
-    private Animator animator;
-
-    //
-    // Audio
-    private AudioSource speaker;
-
-    [SerializeField] private AudioClip walkSound;
-    [SerializeField] private AudioClip idleSound;
-    [SerializeField] private AudioClip JumpSound;
-    [SerializeField] private AudioClip rollSound;
-
-    //
-
-    private void Start()
+    public class PlayerMovement : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-        rb = GetComponent<Rigidbody2D>();
+        // Physics and Player Attributes
+        private Rigidbody2D rb;
+        private Transform tranformPlayer;
+        //
+        [SerializeField] private Transform groundCheck; // Object con của player
+        [SerializeField] private LayerMask groundLayer; // layer của nền đứng
+
+        private float horizontal;
+        [SerializeField] private float speed = 8f;
+        [SerializeField] private float jumpPower = 16f;
+        [SerializeField] public float dashPower = 50f;
+        [SerializeField] private float climbSpeed = 5f;
 
 
-        // Debug phím tắt
-        Debug.Log("WASD: di chuyển");
-        Debug.Log("Chuột trái: bắn");
-        Debug.Log("R: Dash (lộn tới)");
-        Debug.Log("Space: Nhảy");
-        Debug.Log("");
-    }
+        // States
+        public bool isFacingRight = true;
+        public bool isRolling = false;
+        public bool isFiring = false;
+        public bool isClimbing = false;
+        public bool isHurting = false;
+        public bool isActing = false;
+        // Animation
+        private Animator animator;
 
-    // Update is called once per frame
-    void Update()
-    {
-       if (isMoving)
-       {
-            isGrounded();
-            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y); // di chuyển nhân vật theo trục ngang
+        //
+        // Audio
+        private Speaker speaker;
 
-            // Kiểm tra hướng nhìn nhân vật
-            if (!isFacingRight && horizontal > 0f)
+        //
+
+        // Health Manager
+        //[SerializeField] private float currentHealth;
+
+        //Spawn location
+        Vector2 lastPosition;
+
+
+        //Play time
+        float timePlayed;
+
+        //UI
+        UpdateUI updateUI;
+
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody2D>();
+            tranformPlayer = GetComponent<Transform>();
+            speaker = FindObjectOfType<Speaker>();
+            updateUI = FindObjectOfType<UpdateUI>();
+
+            //Spawn position
+            lastPosition = DataManager.Instance.currentPlayer.lastPosition;
+            gameObject.transform.position = lastPosition;
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            HandleMovement();
+            CheckFlip();
+            UpdateAnimations();
+        }
+
+        private void FixedUpdate()
+        {
+            if (isClimbing)
+            {
+                HandleClimbing();
+            }
+
+            //Tinh thoi gian choi
+            DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
+        }
+
+        #region Checking Methods
+        void HandleMovement()
+        {
+            rb.velocity = new Vector2(horizontal * speed, rb.velocity.y);
+            animator.SetBool("isGrounding", IsGrounded());
+        }
+
+        void CheckFlip()
+        {
+            if (isFacingRight && horizontal < 0f || !isFacingRight && horizontal > 0f)
             {
                 Flip();
             }
-            else if (isFacingRight && horizontal < 0f)
+        }
+
+        public bool IsGrounded()
+        {
+            return Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
+        }
+
+        public bool isMove()
+        {
+            return horizontal != 0;
+        }
+
+        #endregion
+
+        #region Activites Methods
+
+        void UpdateAnimations()
+        {
+            animator.SetBool("isMoving", horizontal != 0);
+        }
+
+        private void Flip()
+        {
+            isFacingRight = !isFacingRight;
+            Vector3 localScale = transform.localScale;
+            localScale.x *= -1f;
+            transform.localScale = localScale;
+        }
+
+        void HandleClimbing() //climb
+        {
+            float climbInput = Input.GetAxisRaw("Vertical");
+            if (climbInput != 0)
             {
-                Flip();
+                speaker.PlayAudioOneShot("Climb");
+                if (climbInput > 0)
+                {
+                    tranformPlayer.transform.position += Vector3.up * climbSpeed * Time.fixedDeltaTime;
+                }
+                else if (climbInput < 0)
+                {
+                    tranformPlayer.transform.position += Vector3.down * climbSpeed * Time.fixedDeltaTime;
+                }
+            }
+            
+
+        }
+
+        public void TakeDamage(int damage)
+        {
+            if (isHurting) return;
+            speaker.PlayAudioOneShot("Hit");
+            isHurting = true;
+
+            DataManager.Instance.currentPlayer.TakeDamage(damage);
+            updateUI.UpdateValue();
+            //Debug.Log("Current Health: " + currentHealth);
+
+            if (DataManager.Instance.currentPlayer.health <= 0)
+            {
+                Debug.Log("Die");
+                Destroy(gameObject);
+            }
+            else
+            {
+                StartCoroutine(TakeDamageRoutine());
+            }
+        }
+
+        IEnumerator TakeDamageRoutine()
+        {
+            rb.velocity = new Vector2(rb.velocity.x   * (isFacingRight ? -50f : 50f)  , 10f);
+            yield return new WaitForSeconds(2f);
+            isHurting = false;
+        }
+
+        #endregion
+
+        public void OnMove(InputAction.CallbackContext context)
+        {
+
+                speaker.PlayAudioRemune("Move");
+                horizontal = context.ReadValue<Vector2>().x;
+            
+        }
+
+        public void OnJump(InputAction.CallbackContext context)
+        {
+            if (context.performed && IsGrounded())
+            {
+                speaker.PlayAudioOneShot("Jump");
+                animator.SetTrigger("Jump");
+                rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             }
 
-            AnimationController();
-       }
-    }
-
-    private bool isGrounded()
-    {
-        bool grounded = Physics2D.OverlapCircle(groundCheck.position, 0.1f, groundLayer);
-        // Nếu nhân vật đang chạm đất, thì set trigger "isGrounding" trong animator thành true
-        animator.SetBool("isGrounding", grounded);
-        Debug.Log("isGrounding: " + grounded);
-        return grounded;
-    }
-
-    private void Flip()
-    {
-        isFacingRight = !isFacingRight;
-        Vector3 localScale = transform.localScale;
-        localScale.x *= -1f;
-        transform.localScale = localScale;
-    }
-    #region Input Action System
-    // Hàm Movement được gọi mỗi khi người chơi thực hiện hành động di chuyển.
-    public void Movement(InputAction.CallbackContext context)
-    {
-        // Đọc giá trị của trục x từ context của input và gán cho biến horizontal.
-        // Trục x được sử dụng để xác định hướng di chuyển ngang của nhân vật.
-        horizontal = context.ReadValue<Vector2>().x;
-    }
-
-    // Hàm Jump được gọi mỗi khi người chơi thực hiện hành động nhảy.
-    public void Jump(InputAction.CallbackContext context)
-    {
-        // Nếu hành động nhảy được thực hiện và nhân vật đang đứng trên mặt đất,
-        // thì thiết lập vận tốc theo hướng y cho nhân vật để nhảy lên.
-        if (context.performed && isGrounded())
-        {
-            animator.SetTrigger("Jump");
-            rb.velocity = new Vector2(rb.velocity.x, jumpPower);
+            else if (context.canceled && rb.velocity.y > 0f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            }
         }
 
-        // Nếu hành động nhảy được hủy và vận tốc theo hướng y của nhân vật đang lớn hơn 0,
-        // thì giảm vận tốc theo hướng y của nhân vật để giảm độ cao của nhảy.
-        if (context.canceled && rb.velocity.y > 0f)
+        public void SavePosition()
         {
-            rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
+            DataManager.Instance.currentPlayer.lastPosition = transform.position;
         }
     }
-
-    public void Roll(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded() && !isRolling)
-        {
-            // Đánh dấu là nhân vật đang trong quá trình lăn
-            isRolling = true;
-
-            // Chạy animation roll
-            animator.Play("Roll");
-
-            // Xác định hướng lực sẽ được áp dụng (trong trường hợp này, theo hướng người chơi đang nhìn)
-            // Áp dụng lực 
-
-            transform.position += transform.right * (isFacingRight ? 1:-1) * dashPower * Time.deltaTime;
-
-        }
-        isRolling = false;
-    }
-
-    public void Fire(InputAction.CallbackContext context)
-    {
-        if (context.performed && isGrounded() && !isFiring)
-        {
-            isFiring = true;
-            Debug.Log("Fire");
-            animator.Play("Fire");
-        }
-        isFiring = false;
-    }
-    #endregion
-    void AnimationController()
-    {
-        float speedMove = rb.velocity.magnitude;
-        if (speedMove > 0)
-        {
-            animator.SetBool("isMoving", true);
-        }
-        else
-        {
-            animator.SetBool("isMoving", false);
-        }
-    }
-
-    void takeAction()
-    {
-        // khi thực hiện hành động nào đó, sẽ di chuyển bằng cách cho isMoving = false
-    }
-
 }
+
+

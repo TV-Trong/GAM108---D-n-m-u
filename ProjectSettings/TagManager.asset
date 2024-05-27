@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Thang
   - Gai
+  - Enemy
+  - BoxEnemy
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -54,4 +57,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 1095116493
+    locked: 0
+  - name: UI
+    uniqueID: 3151854299
     locked: 0
