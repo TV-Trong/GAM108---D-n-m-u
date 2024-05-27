@@ -12,7 +12,12 @@ namespace Player
         public GameObject arrowObj;
         private Speaker speaker;
         private Animator animator;
+
+        // States
         private bool isFiring = false;
+        private bool isDashing = false;
+
+        //
         private PlayerMovement playerMovement;
         private Rigidbody2D rb;
 
@@ -67,20 +72,39 @@ namespace Player
 
         private IEnumerator DashCoroutine()
         {
-            playerMovement.isRolling = true;
-            animator.Play("Roll");
-            speaker.PlayAudioOneShot("Roll");
-            float elapsedTime = 0f;
-            Vector3 moveDirection = transform.right * (playerMovement.isFacingRight ? 1 : -1) * playerMovement.dashPower;
-
-            while (elapsedTime < dashDuration)
+            if(!isDashing && !IsPlayingDashAnimation())
             {
-                transform.Translate(moveDirection * Time.deltaTime, Space.World);
-                elapsedTime += Time.deltaTime;
-                yield return null;
+                playerMovement.isRolling = true;
+                animator.Play("Roll");
+                speaker.PlayAudioOneShot("Dash");
+                float elapsedTime = 0f;
+                Vector3 moveDirection = transform.right * (playerMovement.isFacingRight ? 1 : -1) * playerMovement.dashPower;
+
+                while (elapsedTime < dashDuration)
+                {
+                    transform.Translate(moveDirection * Time.deltaTime, Space.World);
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+
+                playerMovement.isRolling = false;
             }
 
-            playerMovement.isRolling = false;
+        }
+
+        private IEnumerator WaitForAnimationDash()
+        {
+            yield return new WaitForSeconds(0.1f);
+            while (IsPlayingDashAnimation())
+            {
+                yield return null;
+            }
+            isDashing = false;
+        }
+
+        private bool IsPlayingDashAnimation()
+        {
+            return animator.GetCurrentAnimatorStateInfo(0).IsName("Dash");
         }
     }
 }
