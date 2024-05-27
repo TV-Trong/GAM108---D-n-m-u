@@ -2,21 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class Slime : EnemyMain
+public class Bird : EnemyMain
 {
     [SerializeField] private GameObject boxPOS;
-    [SerializeField] private GameObject playerPOS;
+    private GameObject playerPOS;
 
-    private Rigidbody2D rb;
+    private Vector3 targetPosition;
+    private bool isMovingUp = true;
+    private float moveRadius = 10f;
+    private float changeTargetTime = 2f;
 
-    private bool isMovingRight = true;
     void Start()
     {
-        health = 2;
+        health = 1;
         speed = 5;
-        damage = 1;
+        damage = 3;
         isDetectedPlayer = false;
 
         playerPOS = GameObject.Find("Player");
@@ -27,18 +28,16 @@ public class Slime : EnemyMain
             return;
         }
 
-        rb = GetComponent<Rigidbody2D>();
-
+        SetRandomTargetPosition();
         StartCoroutine(MoveCoroutine());
     }
+
     void Update()
     {
-        
     }
 
     private void FixedUpdate()
     {
-        
     }
 
     IEnumerator MoveCoroutine()
@@ -47,16 +46,25 @@ public class Slime : EnemyMain
         {
             if (isDetectedPlayer)
             {
-                // Change direction based on the player's position
-                isMovingRight = playerPOS.transform.position.x > transform.position.x;
+                targetPosition = new Vector2(transform.position.x, playerPOS.transform.position.y);
+            }
+            else
+            {
+
+                SetRandomTargetPosition();
+
             }
 
-            // Move normally (patrolling behavior)
-            float direction = isMovingRight ? 1f : -1f;
-            rb.AddForce(new Vector2(direction * speed, 10f), ForceMode2D.Impulse);
-
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(changeTargetTime);
         }
+    }
+
+    private void SetRandomTargetPosition()
+    {
+        float randomX = Random.Range(-moveRadius, moveRadius);
+        float randomY = Random.Range(-moveRadius, moveRadius);
+        targetPosition = new Vector3(boxPOS.transform.position.x + randomX, boxPOS.transform.position.y + randomY, transform.position.z);
+        Debug.Log("Target position:" + targetPosition);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -71,11 +79,7 @@ public class Slime : EnemyMain
     {
         if (collision.CompareTag("BoxEnemy"))
         {
-            if (transform.position.x < boxPOS.transform.position.x)
-            {
-                isMovingRight = true;
-            }
-            else isMovingRight = false;
+            SetRandomTargetPosition();
         }
     }
 }

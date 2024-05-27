@@ -34,4 +34,16 @@ public class EnemyMain: MonoBehaviour
         // Update score
         Destroy(gameObject);
     }
+
+    public virtual void SetFollowPlayer()
+    {
+        isDetectedPlayer = true;
+        speed += 2;
+    }
+
+    public virtual void SetUnFollowPlayer()
+    {
+        isDetectedPlayer = false;
+        speed -= 2;
+    }
 }

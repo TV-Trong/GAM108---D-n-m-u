@@ -12,7 +12,7 @@ public class EnemyAI : MonoBehaviour
         {
             foreach (var enemy in enemies)
             {
-                //enemy.SendMessage("SetFollowPlayer");
+                enemy.SendMessage("SetFollowPlayer");
             }
         }
     }
@@ -23,7 +23,7 @@ public class EnemyAI : MonoBehaviour
         {
             foreach (var enemy in enemies)
             {
-                //enemy.SendMessage("SetUnFollowPlayer");
+                enemy.SendMessage("SetUnFollowPlayer");
             }
         }
     }
