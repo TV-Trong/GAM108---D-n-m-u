@@ -244,11 +244,7 @@ namespace Player
                 rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * 0.5f);
             }
         }
-
-        public void SavePosition()
-        {
-            DataManager.Instance.currentPlayer.lastPosition = transform.position;
-        }
+        
     }
 }
 

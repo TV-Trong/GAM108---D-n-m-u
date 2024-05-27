@@ -605,12 +605,12 @@ GameObject:
   - component: {fileID: 4086754559810376844}
   - component: {fileID: 2819230852224951198}
   m_Layer: 5
-  m_Name: DeleteConformation
+  m_Name: DeleteConfirmation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4719611615785302738
 RectTransform:
   m_ObjectHideFlags: 0
@@ -838,9 +838,9 @@ RectTransform:
   - {fileID: 3787847332415713163}
   m_Father: {fileID: 7438380724439554383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 912.5, y: -376.325}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 229.07, y: 106.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3028081263492789831
@@ -1141,9 +1141,9 @@ RectTransform:
   - {fileID: 7199633844762648633}
   m_Father: {fileID: 7438380724439554383}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 587.5, y: -376.325}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 229.07, y: 106.9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2248859549527549081
@@ -1228,6 +1228,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 7231976540492211891}
+        m_TargetAssemblyTypeName: DeletePlayerButton, Assembly-CSharp
+        m_MethodName: DeletePlayer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 7231976540492211891}
         m_TargetAssemblyTypeName: DeletePlayerButton, Assembly-CSharp
         m_MethodName: BlackScreen

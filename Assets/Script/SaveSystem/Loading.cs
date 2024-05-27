@@ -13,6 +13,10 @@ public class Loading : MonoBehaviour
     Button loadButton;
     [SerializeField] GameObject playerInfo;
     GameObject loading;
+
+    //Objects dung de xoa player
+    GameObject deleteConfirm;
+    Button yesButton;
     private void Start()
     {
         loading = GameObject.Find("BSLoading");
@@ -51,6 +55,10 @@ public class Loading : MonoBehaviour
         timePlayed = GameObject.Find("Played").GetComponentInChildren<TextMeshProUGUI>();
         loadButton = GameObject.Find("PlayerPanel").GetComponentInChildren<Button>();
         loadButton.onClick.AddListener(() => StartLoadGame(i));
+        deleteConfirm = GameObject.Find("DeleteConfirmation");
+        yesButton = GameObject.Find("ButtonYes").GetComponentInChildren<Button>();
+        yesButton.onClick.AddListener(() => DeletePlayer(i));
+        deleteConfirm.SetActive(false);
     }
     private void ReplaceName()
     {
@@ -62,6 +70,11 @@ public class Loading : MonoBehaviour
     private void StartLoadGame(int i)
     {
         StartCoroutine(LoadGame(i));
+    }
+    private void DeletePlayer(int i)
+    {
+        DataManager.Instance.playersList.RemoveAt(i);
+        JsonManager.Instance.SaveData();
     }
     IEnumerator LoadGame(int i)
     {

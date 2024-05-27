@@ -6,11 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    PlayerMovement pM;
-    private void Start()
-    {
-        pM = FindObjectOfType<PlayerMovement>();
-    }
     public void NewGame()
     {
         SceneManager.LoadScene("CharacterCreation");
@@ -30,7 +25,7 @@ public class SceneLoader : MonoBehaviour
     }
     public void SaveAndGotoMain()
     {
-        pM.SavePosition();
+        JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
     }
     

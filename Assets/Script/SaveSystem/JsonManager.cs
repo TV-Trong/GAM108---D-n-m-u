@@ -2,7 +2,7 @@
 using System.IO;
 using System;
 using Newtonsoft.Json;
-public class JsonManager : MonoBehaviour
+public class JsonManager : Singleton<JsonManager>
 {
     private string filePath, fileDir;
 
