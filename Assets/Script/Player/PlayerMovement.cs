@@ -216,6 +216,12 @@ namespace Player
             isHurting = false;
         }
 
+        public void Heal(int healingAmount)
+        {
+            //
+            Debug.Log("Heal");
+        }
+
         #endregion
 
         public void OnMove(InputAction.CallbackContext context)
