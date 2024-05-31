@@ -13,6 +13,8 @@ public class EnemyMain: MonoBehaviour
     public Rigidbody2D rb;
     public Animator anim;
 
+    private EnemyAI enemyAI;
+
     public bool isMovingRight;
     public bool isDetectedPlayer;
     public bool isTakingDamage = false;
@@ -60,6 +62,7 @@ public class EnemyMain: MonoBehaviour
     public virtual void Die()
     {
         // Death logic
+        enemyAI.CallRemoveNullItems();
         // Update score
         Destroy(gameObject);
     }
