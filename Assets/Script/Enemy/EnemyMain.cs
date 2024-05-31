@@ -78,4 +78,5 @@ public class EnemyMain: MonoBehaviour
         isDetectedPlayer = false;
         speed -= 2;
     }
+
 }

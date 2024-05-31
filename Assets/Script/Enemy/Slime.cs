@@ -64,6 +64,10 @@ public class Slime : EnemyMain
         {
             collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
         }
+        if (collision.gameObject.CompareTag("Gai"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
