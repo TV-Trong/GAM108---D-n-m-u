@@ -100,7 +100,6 @@ namespace Player
         private void FixedUpdate()
         {
             animator.SetBool("isClimbing", IsNearLadder());
-            Debug.Log("IdGrounded: " + IsGrounded());
             Debug.Log("isNearLadder: " + IsNearLadder());
             HandleClimbing();
 
@@ -234,7 +233,7 @@ namespace Player
         {
             if (context.performed && IsGrounded())
             {
-                speaker.PlayAudioOneShot("PlayerJump");
+                speaker.PlayAudioOneShot("Jump");
                 animator.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             }
