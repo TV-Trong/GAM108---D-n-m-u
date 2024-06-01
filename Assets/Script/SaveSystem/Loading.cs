@@ -14,13 +14,23 @@ public class Loading : MonoBehaviour
     [SerializeField] GameObject playerInfo;
     GameObject loading;
 
-    //Objects dung de xoa player
-    GameObject deleteConfirm;
-    Button yesButton;
+    //Xoa nguoi choi
+    Button deleteButton;
+    GameObject deletePlayer;
+    DeletePlayerButton deletePlayerButton;
+
     private void Start()
     {
+        //Loading
         loading = GameObject.Find("BSLoading");
         loading.SetActive(false);
+
+        //Delete player
+        deletePlayerButton = FindObjectOfType<DeletePlayerButton>();
+        deletePlayer = GameObject.Find("DeleteConfirmation");
+        deletePlayer.SetActive(false);
+
+        //Dem thu tu nguoi choi trong danh sach
         int count = 0;
         foreach (PlayerFile player in DataManager.Instance.playersList)
         {
@@ -55,10 +65,8 @@ public class Loading : MonoBehaviour
         timePlayed = GameObject.Find("Played").GetComponentInChildren<TextMeshProUGUI>();
         loadButton = GameObject.Find("PlayerPanel").GetComponentInChildren<Button>();
         loadButton.onClick.AddListener(() => StartLoadGame(i));
-        deleteConfirm = GameObject.Find("DeleteConfirmation");
-        yesButton = GameObject.Find("ButtonYes").GetComponentInChildren<Button>();
-        yesButton.onClick.AddListener(() => DeletePlayer(i));
-        deleteConfirm.SetActive(false);
+        deleteButton = GameObject.Find("DeleteButton").GetComponentInChildren<Button>();
+        deleteButton.onClick.AddListener(() => CallDeletePlayer(i));
     }
     private void ReplaceName()
     {
@@ -66,16 +74,11 @@ public class Loading : MonoBehaviour
         timeCreated.gameObject.name = "created";
         timePlayed.gameObject.name = "played";
         loadButton.gameObject.name = "panel";
+        deleteButton.gameObject.name = "delete";
     }
     private void StartLoadGame(int i)
     {
         StartCoroutine(LoadGame(i));
-    }
-    private void DeletePlayer(int i)
-    {
-        DataManager.Instance.playersList.RemoveAt(i);
-        JsonManager.Instance.SaveData();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     IEnumerator LoadGame(int i)
     {
@@ -85,5 +88,11 @@ public class Loading : MonoBehaviour
         DataManager.Instance.SetCurrentPlayer(DataManager.Instance.playersList[i]);
         Debug.Log(DataManager.Instance.currentPlayer.playerName);
         SceneManager.LoadScene(DataManager.Instance.playersList[i].lastCurrentScene);
+    }
+
+    public void CallDeletePlayer(int i)
+    {
+        deletePlayer.SetActive(true);
+        deletePlayerButton.ClickYes(i);
     }
 }

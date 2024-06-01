@@ -1,22 +1,46 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class DeletePlayerButton : MonoBehaviour
 {
-    GameObject blackScreenPanel;
-    Scrollbar scrollbar;
-    
-    public void BlackScreen(int scale)
+    Button yesButton, noButton;
+    private void Start()
     {
-        blackScreenPanel = GameObject.Find("BlackScreen");
-        blackScreenPanel.transform.localScale = new Vector3(scale, scale, scale);
+        yesButton = GameObject.Find("YesButton").GetComponent<Button>();
+        noButton = GameObject.Find("NoButton").GetComponent<Button>();
+        yesButton.onClick.RemoveAllListeners();
+        noButton.onClick.AddListener(ClickNo);
     }
-    public void ScrollbarEnable(bool isActive)
+    public void ClickYes(int i)
     {
-        scrollbar = GetComponentInParent<Scrollbar>();
-        scrollbar.enabled = isActive;
+        StartCoroutine(Wait(i));
+    }
+    IEnumerator Wait(int i)
+    {
+        yield return new WaitForSeconds(0.5f);
+        yesButton.onClick.AddListener(() => DeletePlayer(i));
     }
 
+    public void ClickNo()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void DeletePlayer(int i)
+    {
+        try
+        {
+            DataManager.Instance.playersList.RemoveAt(i);
+        }
+        catch 
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        JsonManager.Instance.SaveData();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
 }
