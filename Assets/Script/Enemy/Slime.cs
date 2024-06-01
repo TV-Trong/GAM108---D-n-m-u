@@ -44,6 +44,7 @@ public class Slime : EnemyMain
     {
         while (true)
         {
+            Debug.Log("Current Pos Focus: " + currentPosFocus);
 
             if (isDetectedPlayer)
             {
@@ -59,12 +60,12 @@ public class Slime : EnemyMain
             anim.Play("Jump");
             rb.AddForce(new Vector2(direction * speed, 10f), ForceMode2D.Impulse);
 
-            if (!isDetectedPlayer && Mathf.Abs(transform.position.x - currentPosFocus.position.x) < 0.1f)
+            if (!isDetectedPlayer && Mathf.Abs(transform.position.x) >= Mathf.Abs(currentPosFocus.position.x))
             {
                 currentPosFocus = currentPosFocus == pos1 ? pos2 : pos1;
             }
             
-            Debug.Log("Current POS Focus: " + currentPosFocus);
+            Debug.Log("Pos focus after mathf: " + currentPosFocus);
 
             yield return new WaitForSeconds(1f);
         }
@@ -79,18 +80,6 @@ public class Slime : EnemyMain
         if (collision.gameObject.CompareTag("Gai"))
         {
             Destroy(gameObject);
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("BoxEnemy"))
-        {
-            if (transform.position.x < boxPOS.transform.position.x)
-            {
-                isMovingRight = true;
-            }
-            else isMovingRight = false;
         }
     }
 }

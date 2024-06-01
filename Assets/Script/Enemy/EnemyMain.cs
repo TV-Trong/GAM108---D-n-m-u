@@ -71,9 +71,6 @@ public class EnemyMain: MonoBehaviour
     }
     public virtual void Die()
     {
-        // Death logic
-        //enemyAI.CallRemoveNullItems();
-        // Update score
         Destroy(gameObject);
     }
 
@@ -89,4 +86,10 @@ public class EnemyMain: MonoBehaviour
         speed -= 2;
     }
 
+
+    private void OnDestroy()
+    {
+        // Update score
+        //enemyAI.RemoveMissingEnemies();
+    }
 }

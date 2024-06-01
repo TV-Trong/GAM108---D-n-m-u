@@ -11,17 +11,10 @@ public class EnemyAI : MonoBehaviour
         if (enemies.Count == 0) Destroy(gameObject);
     }
 
-    public void RemoveMissingEnemies()
+    private void FixedUpdate()
     {
         enemies.RemoveAll(item => item == null);
         if (enemies.Count == 0) Destroy(gameObject);
-    }
-
-    public void CallRemoveNullItems()
-    {
-        // Điều kiện true để kích hoạt xóa phần tử null
-
-        RemoveMissingEnemies();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -5,6 +5,8 @@ public class Arrow : MonoBehaviour
 {
     [SerializeField] private float speed;
 
+
+
     private float damage;
     private void Start()
     {
@@ -27,6 +29,11 @@ public class Arrow : MonoBehaviour
                 enemy.TakeDamage(damage);
             }
 
+            Destroy(gameObject);
+        }
+
+        if (Physics2D.OverlapCircle(transform.position, 0.1f, LayerMask.GetMask("Ground")))
+        {
             Destroy(gameObject);
         }
     }
