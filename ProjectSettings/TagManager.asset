@@ -10,6 +10,7 @@ TagManager:
   - BoxEnemy
   - Coin
   - Fruits
+  - Boss
   layers:
   - Default
   - TransparentFX

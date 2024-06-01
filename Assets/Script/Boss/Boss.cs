@@ -1,16 +1,16 @@
 ﻿
+using UnityEditor.Tilemaps;
 using UnityEngine;
 
 public class Boss : EnemyMain
 {
-    private bool movingRight = true;
     public Transform leftLimit;
     public Transform rightLimit;
 
     void Start()
     {
         health = 10;
-        speed  = 1;
+        speed  = 1; 
 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
@@ -19,20 +19,22 @@ public class Boss : EnemyMain
 
     void Update()
     {
-        if (movingRight)
+        if (isMovingRight)
         {
+            transform.localScale = new Vector2(-1f, 1f);
             transform.Translate(Vector2.right * speed * Time.deltaTime);
             if (transform.position.x >= rightLimit.transform.position.x)
             {
-                movingRight = false;
+                isMovingRight = false;
             }
         }
         else
         {
+            transform.localScale = new Vector2(1f, 1f);
             transform.Translate(Vector2.left * speed * Time.deltaTime);
             if (transform.position.x <= leftLimit.transform.position.x)
             {
-                movingRight = true;
+                isMovingRight = true;
             }
         }
 
