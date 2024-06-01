@@ -7,7 +7,7 @@ public class DeletePlayerButton : MonoBehaviour
 {
     GameObject blackScreenPanel;
     Scrollbar scrollbar;
-
+    
     public void BlackScreen(int scale)
     {
         blackScreenPanel = GameObject.Find("BlackScreen");
