@@ -9,21 +9,30 @@ public class EnemyMain: MonoBehaviour
     public float speed;
     public int damage;
 
+    public Transform pos1;
+    public Transform pos2;
+    public Transform currentPosFocus;
+
+
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
     public Animator anim;
+
+    private EnemyAI enemyAI;
 
     public bool isMovingRight;
     public bool isDetectedPlayer;
     public bool isTakingDamage = false;
 
-    public virtual void Move()
+    void Start()
     {
     }
 
-    public virtual void Attack()
+    public virtual void Flip()
     {
+        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * 1f, 1);
     }
+
 
     public virtual void TakeDamage(float amount)
     {
@@ -41,6 +50,9 @@ public class EnemyMain: MonoBehaviour
 
     protected IEnumerator TakeDamageCoroutine()
     {
+        rb.AddForce(new Vector2((isMovingRight ? -1: 1) * 3, 10f), ForceMode2D.Impulse);
+
+
         float duration = 0.5f;
         float elapsed = 0f;
         Color originalColor = spriteRenderer.color;
@@ -59,8 +71,6 @@ public class EnemyMain: MonoBehaviour
     }
     public virtual void Die()
     {
-        // Death logic
-        // Update score
         Destroy(gameObject);
     }
 
@@ -74,5 +84,12 @@ public class EnemyMain: MonoBehaviour
     {
         isDetectedPlayer = false;
         speed -= 2;
+    }
+
+
+    private void OnDestroy()
+    {
+        // Update score
+        //enemyAI.RemoveMissingEnemies();
     }
 }

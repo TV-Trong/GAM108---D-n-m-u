@@ -100,8 +100,6 @@ namespace Player
         private void FixedUpdate()
         {
             animator.SetBool("isClimbing", IsNearLadder());
-            Debug.Log("IdGrounded: " + IsGrounded());
-            Debug.Log("isNearLadder: " + IsNearLadder());
             HandleClimbing();
 
             //Tinh thoi gian choi
@@ -186,7 +184,6 @@ namespace Player
 
             if (DataManager.Instance.currentPlayer.health <= 0)
             {
-                Debug.Log("Die");
                 Destroy(gameObject);
             }
             else
@@ -220,7 +217,6 @@ namespace Player
         {
             DataManager.Instance.currentPlayer.health = Mathf.Clamp(DataManager.Instance.currentPlayer.health + healingAmount, 0, 100);
             updateUI.UpdateValue();
-            Debug.Log("Heal");
         }
 
         #endregion
@@ -234,7 +230,7 @@ namespace Player
         {
             if (context.performed && IsGrounded())
             {
-                speaker.PlayAudioOneShot("PlayerJump");
+                speaker.PlayAudioOneShot("Jump");
                 animator.SetTrigger("Jump");
                 rb.velocity = new Vector2(rb.velocity.x, jumpPower);
             }

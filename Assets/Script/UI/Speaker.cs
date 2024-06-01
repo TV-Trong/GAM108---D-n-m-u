@@ -16,7 +16,7 @@ public class Speaker : MonoBehaviour
 
     public void PlayAudioOneShot(string name)
     {
-        Debug.Log("Action: " + name);
+        //Debug.Log("Action: " + name);
         AudioClip audioClip = audioClips.Find(x =>  x.name == name);
         if (audioClip != null) speakerOneShot.PlayOneShot(audioClip);
         else Debug.Log("No Sound");

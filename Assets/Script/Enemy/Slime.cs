@@ -28,6 +28,10 @@ public class Slime : EnemyMain
             return;
         }
 
+        if (pos1 != null && pos2 != null)
+        {
+            currentPosFocus = pos1;
+        }
 
 
         rb = GetComponent<Rigidbody2D>();
@@ -35,24 +39,33 @@ public class Slime : EnemyMain
         spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(MoveCoroutine());
     }
-    void Flip()
-    {
-        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * 1f, 1);
-    }
 
     IEnumerator MoveCoroutine()
     {
         while (true)
         {
+            Debug.Log("Current Pos Focus: " + currentPosFocus);
+
             if (isDetectedPlayer)
             {
                 isMovingRight = playerPOS.transform.position.x > transform.position.x;
-                
             }
+            else
+            {
+                isMovingRight = transform.position.x < currentPosFocus.position.x;
+            }
+
             float direction = isMovingRight ? 1f : -1f;
             Flip();
             anim.Play("Jump");
             rb.AddForce(new Vector2(direction * speed, 10f), ForceMode2D.Impulse);
+
+            if (!isDetectedPlayer && Mathf.Abs(transform.position.x) >= Mathf.Abs(currentPosFocus.position.x))
+            {
+                currentPosFocus = currentPosFocus == pos1 ? pos2 : pos1;
+            }
+            
+            Debug.Log("Pos focus after mathf: " + currentPosFocus);
 
             yield return new WaitForSeconds(1f);
         }
@@ -64,17 +77,9 @@ public class Slime : EnemyMain
         {
             collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
         }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("BoxEnemy"))
+        if (collision.gameObject.CompareTag("Gai"))
         {
-            if (transform.position.x < boxPOS.transform.position.x)
-            {
-                isMovingRight = true;
-            }
-            else isMovingRight = false;
+            Destroy(gameObject);
         }
     }
 }
