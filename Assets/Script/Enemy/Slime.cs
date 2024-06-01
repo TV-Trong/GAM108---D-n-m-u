@@ -28,6 +28,10 @@ public class Slime : EnemyMain
             return;
         }
 
+        if (pos1 != null && pos2 != null)
+        {
+            currentPosFocus = pos1;
+        }
 
 
         rb = GetComponent<Rigidbody2D>();
@@ -35,24 +39,38 @@ public class Slime : EnemyMain
         spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(MoveCoroutine());
     }
-    void Flip()
-    {
-        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * 1f, 1);
-    }
 
     IEnumerator MoveCoroutine()
     {
         while (true)
         {
+            float step = speed * Time.deltaTime;
+            float xCurrentPosFocus = currentPosFocus.position.x;
+
             if (isDetectedPlayer)
             {
+                Debug.Log("Move to Player");
+                // Di chuyển về phía người chơi
                 isMovingRight = playerPOS.transform.position.x > transform.position.x;
-                
             }
+            else
+            {
+                Debug.Log("Move to POS");
+                // Di chuyển qua lại giữa pos1 và pos2
+                isMovingRight = transform.position.x < currentPosFocus.position.x;
+            }
+
             float direction = isMovingRight ? 1f : -1f;
             Flip();
             anim.Play("Jump");
+            Debug.Log("Jump Actions by Slime");
             rb.AddForce(new Vector2(direction * speed, 10f), ForceMode2D.Impulse);
+
+            // Kiểm tra nếu đã tới vị trí focus hiện tại và chuyển focus nếu cần thiết
+            if (!isDetectedPlayer && Mathf.Abs(transform.position.x - xCurrentPosFocus) < 0.1f)
+            {
+                currentPosFocus = currentPosFocus == pos1 ? pos2 : pos1;
+            }
 
             yield return new WaitForSeconds(1f);
         }
