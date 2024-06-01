@@ -8,7 +8,7 @@ public class Traps : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.SendMessage("TakeDamage", 10);
+            collision.gameObject.SendMessage("TakeDamage", 100);
         }
     }
 }

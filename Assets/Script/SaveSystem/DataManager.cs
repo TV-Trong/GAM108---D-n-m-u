@@ -56,8 +56,8 @@ public class PlayerFile
         HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
         if (admin.Contains(name))
         {
-            lastCurrentScene = "Tutorial"; //Kiem tra neu ten la 1 trong so admin thi load scene Tutorial
-            lastPosition = new Vector2(-10.48f, -1.35f);
+            lastCurrentScene = name; //Kiem tra neu ten la 1 trong so admin thi load scene Tutorial
+            lastPosition = new Vector2(0f, 0f);
         }
         else
         {
