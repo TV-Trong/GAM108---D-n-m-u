@@ -4,7 +4,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : Singleton<SceneLoader>
 {
     PlayerMovement playerMovement;
     public void NewGame()
@@ -30,6 +30,48 @@ public class SceneLoader : MonoBehaviour
         playerMovement.SavePosition();
         JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void LoseALife()
+    {
+        if (DataManager.Instance.currentPlayer.life <= 0)
+        {
+            StartCoroutine(GameOver());
+            JsonManager.Instance.SaveData();
+        }
+        else
+        {
+            StartCoroutine(DelayedReload());
+            DataManager.Instance.currentPlayer.ResetHP();
+            JsonManager.Instance.SaveData();
+        }
+    }
+    IEnumerator DelayedReload()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(2f);
+        LoseGame();
+    }
+
+    public void LoadNextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+    public void WinGame()
+    {
+        SceneManager.LoadScene("Chienthang");
+    }
+    public void LoseGame()
+    {
+        SceneManager.LoadScene("Thatbai");
+    }
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
     public void StopTime()

@@ -11,13 +11,13 @@ public class DataManager : Singleton<DataManager>
     public PlayerFile currentPlayer;
     private void Start()
     {
-        StartCoroutine(LoadData());
+        LoadData();
     }
     public void SetCurrentPlayer(PlayerFile player)
     {
         currentPlayer = player;
     }
-    IEnumerator LoadData()
+    void LoadData()
     {
         string filePath = Application.persistentDataPath + "/Saves/" + "saveFile.sav"; 
         if (File.Exists(filePath))
@@ -26,17 +26,16 @@ public class DataManager : Singleton<DataManager>
             PlayerList dataList = JsonConvert.DeserializeObject<PlayerList>(json);
             Debug.Log("Lấy dữ liệu thành công!");
             playersList = dataList.savedList;
-            yield return null;
         }
         else
         {
             Debug.LogWarning("Không tìm thấy dữ liệu!");
-            yield return null;
         }
     }
 }
 public class PlayerFile
 {
+    public int life;
     public string playerName;
     public float health;
     public int coin;
@@ -48,6 +47,7 @@ public class PlayerFile
     public PlayerFile(string name) //Danh cho tao nhan vat
     {
         playerName = name;
+        life = 3;
         health = 100;
         coin = 0;
         soul = 0;
@@ -56,8 +56,18 @@ public class PlayerFile
         HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
         if (admin.Contains(name))
         {
-            lastCurrentScene = name; //Kiem tra neu ten la 1 trong so admin thi load scene Tutorial
-            lastPosition = new Vector2(0f, 0f);
+            try
+            {
+                lastCurrentScene = name;
+
+                lastPosition = new Vector2(0f, 0f);
+            }
+            catch
+            {
+                lastCurrentScene = "Map 1";
+
+                lastPosition = new Vector2(-36f, 0f);
+            }
         }
         else
         {
@@ -66,20 +76,19 @@ public class PlayerFile
         }
 
     }
-    //public PlayerFile(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
-    //{
-    //    this.playerName = playerName;
-    //    this.timeCreated = timeCreated;
-    //    this.timePlayed = timePlayed;
-    //    this.health = health;
-    //    this.coin = coin;
-    //    this.soul = soul;
-    //    this.lastPosition = lastPosition;
-    //    this.lastCurrentScene = lastCurrentScene;
-    //}
+
+
     public void TakeDamage(float damage)
     {
         health -= damage;
+    }
+    public void LoseLife()
+    {
+        life -= 1;
+    }
+    public void ResetHP()
+    {
+        health = 100;
     }
     public void CoinUp()
     {

@@ -56,6 +56,7 @@ namespace Player
         //UI
         UpdateUI updateUI;
 
+
         private void Start()
         {
             animator = GetComponent<Animator>();
@@ -64,7 +65,7 @@ namespace Player
             speaker = FindObjectOfType<Speaker>();
             updateUI = FindObjectOfType<UpdateUI>();
             spriteRenderer = GetComponent<SpriteRenderer>();
-
+            //---------//
 
             //Spawn position
             lastPosition = DataManager.Instance.currentPlayer.lastPosition;
@@ -184,7 +185,10 @@ namespace Player
 
             if (DataManager.Instance.currentPlayer.health <= 0)
             {
-                Destroy(gameObject);
+                DataManager.Instance.currentPlayer.LoseLife();
+                gameObject.transform.localScale = Vector3.zero;
+                rb.bodyType = RigidbodyType2D.Static;
+                SceneLoader.Instance.LoseALife();
             }
             else
             {
