@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Player
@@ -56,6 +57,7 @@ namespace Player
         //UI
         UpdateUI updateUI;
 
+
         private void Start()
         {
             animator = GetComponent<Animator>();
@@ -65,10 +67,9 @@ namespace Player
             updateUI = FindObjectOfType<UpdateUI>();
             spriteRenderer = GetComponent<SpriteRenderer>();
 
-
-            //Spawn position
-            lastPosition = DataManager.Instance.currentPlayer.lastPosition;
-            gameObject.transform.position = lastPosition;
+            //Set spawn and Save
+            transform.position = DataManager.Instance.currentPlayer.lastPosition;
+            SceneLoader.Instance.SaveOnNewLevel();
         }
 
         // Update is called once per frame
@@ -184,7 +185,14 @@ namespace Player
 
             if (DataManager.Instance.currentPlayer.health <= 0)
             {
-                Destroy(gameObject);
+                gameObject.transform.localScale = Vector3.zero;
+                rb.bodyType = RigidbodyType2D.Static;
+
+                DataManager.Instance.currentPlayer.LoseLife();
+                SceneLoader.Instance.LoseALife();
+
+                Button pause = GameObject.Find("PauseButton").GetComponent<Button>();
+                pause.interactable = false;
             }
             else
             {
@@ -242,6 +250,7 @@ namespace Player
         }
         public void SavePosition()
         {
+            DataManager.Instance.currentPlayer.lastCurrentScene = SceneManager.GetActiveScene().name;
             DataManager.Instance.currentPlayer.lastPosition = transform.position;
         }
         

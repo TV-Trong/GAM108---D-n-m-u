@@ -11,32 +11,31 @@ public class DataManager : Singleton<DataManager>
     public PlayerFile currentPlayer;
     private void Start()
     {
-        StartCoroutine(LoadData());
+        LoadData();
     }
     public void SetCurrentPlayer(PlayerFile player)
     {
         currentPlayer = player;
     }
-    IEnumerator LoadData()
+    void LoadData()
     {
         string filePath = Application.persistentDataPath + "/Saves/" + "saveFile.sav"; 
         if (File.Exists(filePath))
         {
             string json = File.ReadAllText(filePath);
             PlayerList dataList = JsonConvert.DeserializeObject<PlayerList>(json);
-            Debug.Log("Lấy dữ liệu thành công!");
             playersList = dataList.savedList;
-            yield return null;
+            Debug.Log("Lấy dữ liệu thành công!");
         }
         else
         {
             Debug.LogWarning("Không tìm thấy dữ liệu!");
-            yield return null;
         }
     }
 }
 public class PlayerFile
 {
+    public int life;
     public string playerName;
     public float health;
     public int coin;
@@ -45,45 +44,62 @@ public class PlayerFile
     public float timePlayed;
     public Vector2 lastPosition;
     public string lastCurrentScene;
-    public PlayerFile(string name) //Danh cho tao nhan vat
+    public PlayerFile(string name = "") //Danh cho tao nhan vat
     {
         playerName = name;
+        life = 3;
         health = 100;
         coin = 0;
         soul = 0;
         timeCreated = DateTime.Now;
         timePlayed = 0;
+        lastPosition = Vector2.zero;
         HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
         if (admin.Contains(name))
         {
-            lastCurrentScene = name; //Kiem tra neu ten la 1 trong so admin thi load scene Tutorial
-            lastPosition = new Vector2(0f, 0f);
+            try
+            {
+                lastCurrentScene = name; //Lay scene cua admin
+            }
+            catch
+            {
+                lastCurrentScene = "Map 1"; //Khong ton tai scene cua admin
+            }
         }
         else
         {
-            lastCurrentScene = "Map 1";
-            lastPosition = new Vector2(-36f, 0f);
+            lastCurrentScene = "Map 1"; //Mac dinh
         }
 
     }
-    //public PlayerFile(string playerName, DateTime timeCreated, float timePlayed, float health, int coin, int soul, Vector2 lastPosition, string lastCurrentScene)
-    //{
-    //    this.playerName = playerName;
-    //    this.timeCreated = timeCreated;
-    //    this.timePlayed = timePlayed;
-    //    this.health = health;
-    //    this.coin = coin;
-    //    this.soul = soul;
-    //    this.lastPosition = lastPosition;
-    //    this.lastCurrentScene = lastCurrentScene;
-    //}
+    
+
     public void TakeDamage(float damage)
     {
         health -= damage;
     }
+    public void LoseLife()
+    {
+        life -= 1;
+    }
+    public void ResetHP()
+    {
+        health = 100;
+    }
     public void CoinUp()
     {
         coin += 1;
+    }
+    public void LifeUp()
+    {
+        if (coin >= 20)
+        {
+            coin -= 20;
+            life += 1;
+
+            Speaker speaker = GameObject.Find("Speaker").GetComponent<Speaker>();
+            speaker.PlaySoundLifeUp();
+        }
     }
     public void SetTimePlayed(float deltaTime)
     {

@@ -38,9 +38,9 @@ public class DeletePlayerButton : MonoBehaviour
         }
         catch 
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            SceneLoader.Instance.ReloadScene();
         }
         JsonManager.Instance.SaveData();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        SceneLoader.Instance.ReloadScene();
     }
 }

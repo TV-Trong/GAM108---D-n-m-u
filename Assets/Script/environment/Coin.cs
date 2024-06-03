@@ -21,6 +21,7 @@ public class Coin : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             DataManager.Instance.currentPlayer.CoinUp();
+            DataManager.Instance.currentPlayer.LifeUp();
             updateUI.UpdateValue();
             PickUp();
             Destroy(gameObject, speaker.clip.length);    
@@ -28,7 +29,7 @@ public class Coin : MonoBehaviour
     }
 
     private void PickUp()
-    {
+    {   
         speaker.Play();
     }
 }

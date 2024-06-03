@@ -32,6 +32,12 @@ public class Speaker : MonoBehaviour
             speakerRemune.Play();
         }
     }
+
+    public void PlaySoundLifeUp()
+    {
+        AudioClip lifeUpSound = audioClips.Find(x => x.name == "LifeUpSound");
+        if (lifeUpSound != null) speakerOneShot.PlayOneShot(lifeUpSound);
+    }
     
     public void MuteAudioRemune()
     {

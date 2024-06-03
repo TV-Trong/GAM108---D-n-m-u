@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 
 public class Traps : MonoBehaviour
@@ -8,7 +9,8 @@ public class Traps : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.SendMessage("TakeDamage", 100);
+            PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
+            player.TakeDamage(100);
         }
     }
 }
