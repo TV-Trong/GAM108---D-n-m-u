@@ -90,6 +90,17 @@ public class PlayerFile
     {
         coin += 1;
     }
+    public void LifeUp()
+    {
+        if (coin >= 20)
+        {
+            coin -= 20;
+            life += 1;
+
+            Speaker speaker = GameObject.Find("Speaker").GetComponent<Speaker>();
+            speaker.PlaySoundLifeUp();
+        }
+    }
     public void SetTimePlayed(float deltaTime)
     {
         timePlayed += deltaTime;

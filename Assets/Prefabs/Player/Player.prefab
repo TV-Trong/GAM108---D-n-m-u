@@ -54,6 +54,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 4b5141b9356a66345951b023c0a086f0, type: 3}
   - {fileID: 8300000, guid: b464ff9c385642944b029efc4a7edfe0, type: 3}
   - {fileID: 8300000, guid: 99f2ec710d4d6824e85966909c7dc8c8, type: 3}
+  - {fileID: 8300000, guid: 4100aa9e25a092844b9541d443ab2d97, type: 3}
   speakerOneShot: {fileID: 6002036182454627567}
   speakerRemune: {fileID: 7878028851347849086}
 --- !u!82 &6002036182454627567
