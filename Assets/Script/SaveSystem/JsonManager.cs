@@ -2,6 +2,7 @@
 using System.IO;
 using System;
 using Newtonsoft.Json;
+using System.Collections;
 public class JsonManager : Singleton<JsonManager>
 {
     private string filePath, fileDir;
@@ -31,6 +32,5 @@ public class JsonManager : Singleton<JsonManager>
         Debug.Log("Đã lưu dữ liệu thành công vào: " + filePath);
     }
 
-    
 }
 

@@ -19,7 +19,7 @@ EditorBuildSettings:
     guid: cdc427f967fe7024d83c381a85bf50de
   - enabled: 1
     path: Assets/Scenes/Map 2.unity
-    guid: 14dc9f0f518dc3b44a3c991858e05fd0
+    guid: 0a4246099422aa94aac78f058a874f64
   - enabled: 1
     path: Assets/Scenes/Map 3.unity
     guid: adcd18870f5da874784bedaaac189907
@@ -29,6 +29,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Trong.unity
     guid: ec524d161759a714eb117f9f3c6a7bd8
+  - enabled: 1
+    path: Assets/Scenes/Trong_Map2.unity
+    guid: 14dc9f0f518dc3b44a3c991858e05fd0
   - enabled: 1
     path: Assets/Scenes/Tu.unity
     guid: 5f9aa70a8a6239c4bacb7b2a123079d0

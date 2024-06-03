@@ -31,6 +31,24 @@ public class SceneLoader : Singleton<SceneLoader>
         JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
     }
+    public void SaveOnNewLevel()
+    {
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        playerMovement.SavePosition();
+        JsonManager.Instance.SaveData();
+    }
+
+    public void LoadNextLevel()
+    {
+        int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextLevel);
+    }
+    public void ResetPlayer()
+    {
+        DataManager.Instance.currentPlayer = new PlayerFile(DataManager.Instance.currentPlayer.playerName);
+        JsonManager.Instance.SaveData();
+        SceneManager.LoadScene(DataManager.Instance.currentPlayer.lastCurrentScene);
+    }
 
     public void LoseALife()
     {
@@ -56,18 +74,13 @@ public class SceneLoader : Singleton<SceneLoader>
         yield return new WaitForSeconds(2f);
         LoseGame();
     }
-
-    public void LoadNextLevel()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
     public void WinGame()
     {
-        SceneManager.LoadScene("Chienthang");
+        SceneManager.LoadScene("Chien thang");
     }
     public void LoseGame()
     {
-        SceneManager.LoadScene("Thatbai");
+        SceneManager.LoadScene("That bai");
     }
     public void ReloadScene()
     {

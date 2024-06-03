@@ -24,8 +24,8 @@ public class DataManager : Singleton<DataManager>
         {
             string json = File.ReadAllText(filePath);
             PlayerList dataList = JsonConvert.DeserializeObject<PlayerList>(json);
-            Debug.Log("Lấy dữ liệu thành công!");
             playersList = dataList.savedList;
+            Debug.Log("Lấy dữ liệu thành công!");
         }
         else
         {
@@ -44,7 +44,7 @@ public class PlayerFile
     public float timePlayed;
     public Vector2 lastPosition;
     public string lastCurrentScene;
-    public PlayerFile(string name) //Danh cho tao nhan vat
+    public PlayerFile(string name = "") //Danh cho tao nhan vat
     {
         playerName = name;
         life = 3;
@@ -53,30 +53,26 @@ public class PlayerFile
         soul = 0;
         timeCreated = DateTime.Now;
         timePlayed = 0;
+        lastPosition = Vector2.zero;
         HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
         if (admin.Contains(name))
         {
             try
             {
-                lastCurrentScene = name;
-
-                lastPosition = new Vector2(0f, 0f);
+                lastCurrentScene = name; //Lay scene cua admin
             }
             catch
             {
-                lastCurrentScene = "Map 1";
-
-                lastPosition = new Vector2(-36f, 0f);
+                lastCurrentScene = "Map 1"; //Khong ton tai scene cua admin
             }
         }
         else
         {
-            lastCurrentScene = "Map 1";
-            lastPosition = new Vector2(-36f, 0f);
+            lastCurrentScene = "Map 1"; //Mac dinh
         }
 
     }
-
+    
 
     public void TakeDamage(float damage)
     {
