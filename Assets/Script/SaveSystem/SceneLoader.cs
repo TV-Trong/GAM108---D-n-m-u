@@ -77,10 +77,12 @@ public class SceneLoader : Singleton<SceneLoader>
     }
     public void WinGame()
     {
+        BGMusic.Instance.StopAllSong();
         SceneManager.LoadScene("Chien thang");
     }
     public void LoseGame()
     {
+        BGMusic.Instance.StopAllSong();
         SceneManager.LoadScene("That bai");
     }
     public void ReloadScene()
