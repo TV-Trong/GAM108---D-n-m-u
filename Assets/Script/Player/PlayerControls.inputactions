@@ -111,17 +111,6 @@
                 },
                 {
                     "name": "",
-                    "id": "884e579c-4610-47f2-a444-7daacbb59d39",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "aa381d5b-1d76-475d-a8f6-96b4f7109128",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -133,8 +122,19 @@
                 },
                 {
                     "name": "",
+                    "id": "9d791da5-1f82-45af-8913-e13e7b752976",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a7f19bc4-f0c1-48bd-b734-dc830da7eeab",
-                    "path": "<Keyboard>/r",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
@@ -145,7 +145,7 @@
                 {
                     "name": "",
                     "id": "57ca12a5-adca-40a7-b2bf-ebcf50d49f8d",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",

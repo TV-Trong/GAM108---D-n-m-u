@@ -137,6 +137,11 @@ namespace Player
             return horizontal != 0;
         }
 
+        public bool IsStandingStillOnGround()
+        {
+            return IsGrounded() && horizontal == 0;
+        }
+
         #endregion
 
         #region Activites Methods
