@@ -37,7 +37,7 @@ namespace Player
 
         public void OnFire(InputAction.CallbackContext context)
         {
-            if (!isFiring && !IsPlayingFireAnimation() && playerMovement.IsGrounded())
+            if (!isFiring && !IsPlayingFireAnimation() && playerMovement.IsStandingStillOnGround())
             {
                 speaker.PlayAudioOneShot("Fire");
                 isFiring = true;
