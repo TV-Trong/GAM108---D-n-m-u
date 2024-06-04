@@ -32,6 +32,11 @@ public class DataManager : Singleton<DataManager>
             Debug.LogWarning("Không tìm thấy dữ liệu!");
         }
     }
+    public void DeletePlayer()
+    {
+        playersList.Remove(currentPlayer);
+        JsonManager.Instance.SaveData();
+    }
 }
 public class PlayerFile
 {

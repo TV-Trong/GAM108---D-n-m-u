@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class UpdateUI : MonoBehaviour
 {
     Slider healthSlider, shadowSlider;
-    TextMeshProUGUI coin, name;
+    TextMeshProUGUI coin, nameTag;
 
 
     private void Start()
@@ -16,8 +16,8 @@ public class UpdateUI : MonoBehaviour
         healthSlider = GameObject.Find("SliderHealth").GetComponent<Slider>();
         shadowSlider = GameObject.Find("SliderShadow").GetComponent<Slider>();
         coin = GameObject.Find("CoinCount").GetComponent<TextMeshProUGUI>();
-        name = GameObject.Find("Name").GetComponentInChildren<TextMeshProUGUI>();
-        name.text = DataManager.Instance.currentPlayer.playerName;
+        nameTag = GameObject.Find("Name").GetComponentInChildren<TextMeshProUGUI>();
+        nameTag.text = DataManager.Instance.currentPlayer.playerName;
         UpdateValue();
     }
 

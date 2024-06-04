@@ -10,20 +10,6 @@ public class BGMusic : Singleton<BGMusic>
     private void Start()
     {
         listOfSongs[currentSong].Play();
-        //for (int i = 0; i < listOfSongs.Length; i++)
-        //{
-        //    if (i == currentSong)
-        //    {
-        //        if (!listOfSongs[i].isPlaying)
-        //        {
-        //            listOfSongs[i].Play();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        listOfSongs[i].Stop();
-        //    }
-        //}
     }
     public void PlayASong(int song)
     {
