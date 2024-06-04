@@ -86,6 +86,10 @@ public class PlayerFile
     {
         health = 100;
     }
+    public void ResetPos()
+    {
+        lastPosition = Vector2.zero;
+    }
     public void CoinUp()
     {
         coin += 1;
