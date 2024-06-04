@@ -12,7 +12,11 @@ public class FinishLine : MonoBehaviour
             string level = SceneManager.GetActiveScene().name;
             if (level != "FinalLevel")
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+                SceneLoader.Instance.LoadNextLevel();
+            }
+            else
+            {
+                SceneLoader.Instance.WinGame();
             }
         }
     }

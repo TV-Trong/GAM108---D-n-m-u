@@ -4,7 +4,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneLoader : Singleton<SceneLoader>
 {
     PlayerMovement playerMovement;
     public void NewGame()
@@ -30,6 +30,61 @@ public class SceneLoader : MonoBehaviour
         playerMovement.SavePosition();
         JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
+    }
+    public void SaveOnNewLevel()
+    {
+        playerMovement = FindObjectOfType<PlayerMovement>();
+        playerMovement.SavePosition();
+        JsonManager.Instance.SaveData();
+    }
+
+    public void LoadNextLevel()
+    {
+        int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
+        SceneManager.LoadScene(nextLevel);
+    }
+    public void ResetPlayer()
+    {
+        DataManager.Instance.currentPlayer = new PlayerFile(DataManager.Instance.currentPlayer.playerName);
+        JsonManager.Instance.SaveData();
+        SceneManager.LoadScene(DataManager.Instance.currentPlayer.lastCurrentScene);
+    }
+
+    public void LoseALife()
+    {
+        if (DataManager.Instance.currentPlayer.life <= 0)
+        {
+            StartCoroutine(GameOver());
+            JsonManager.Instance.SaveData();
+        }
+        else
+        {
+            StartCoroutine(DelayedReload());
+            DataManager.Instance.currentPlayer.ResetHP();
+            JsonManager.Instance.SaveData();
+        }
+    }
+    IEnumerator DelayedReload()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    IEnumerator GameOver()
+    {
+        yield return new WaitForSeconds(2f);
+        LoseGame();
+    }
+    public void WinGame()
+    {
+        SceneManager.LoadScene("Chien thang");
+    }
+    public void LoseGame()
+    {
+        SceneManager.LoadScene("That bai");
+    }
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     
     public void StopTime()

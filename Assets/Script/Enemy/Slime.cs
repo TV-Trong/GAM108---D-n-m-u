@@ -67,7 +67,9 @@ public class Slime : EnemyMain
             
             Debug.Log("Pos focus after mathf: " + currentPosFocus);
 
-            yield return new WaitForSeconds(1f);
+            //Nhay ngau nhien
+            float randomJumpTime = Random.Range(0.5f, 1.5f);
+            yield return new WaitForSeconds(randomJumpTime);
         }
     }
 
@@ -75,7 +77,8 @@ public class Slime : EnemyMain
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(10);
+            //Them sat thuong ngau nhien
+            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(Random.Range(20, 35));
         }
         if (collision.gameObject.CompareTag("Gai"))
         {
