@@ -1,6 +1,7 @@
 ﻿using Player;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -20,6 +21,7 @@ namespace Player
         //
         private PlayerMovement playerMovement;
         private Rigidbody2D rb;
+        private Collider2D col;
 
         private float dashDuration = 0.2f;
 
@@ -29,12 +31,13 @@ namespace Player
             animator = GetComponent<Animator>();
             playerMovement = GetComponent<PlayerMovement>();
             rb = GetComponent<Rigidbody2D>();
+            col = GetComponent<Collider2D>();
         }
 
 
         public void OnFire(InputAction.CallbackContext context)
         {
-            if (!isFiring && !IsPlayingFireAnimation())
+            if (!isFiring && !IsPlayingFireAnimation() && playerMovement.IsGrounded())
             {
                 speaker.PlayAudioOneShot("Fire");
                 isFiring = true;
