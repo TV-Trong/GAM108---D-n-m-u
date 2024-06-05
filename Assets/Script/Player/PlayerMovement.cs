@@ -44,9 +44,6 @@ namespace Player
 
         //
 
-        // Health Manager
-        //[SerializeField] private float currentHealth;
-
         //Spawn location
         Vector2 lastPosition;
 
