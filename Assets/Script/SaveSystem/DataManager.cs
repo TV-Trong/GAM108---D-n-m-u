@@ -49,6 +49,7 @@ public class PlayerFile
     public float timePlayed;
     public Vector2 lastPosition;
     public string lastCurrentScene;
+    public bool isWon;
     public PlayerFile(string name = "") //Danh cho tao nhan vat
     {
         playerName = name;
@@ -75,7 +76,7 @@ public class PlayerFile
         {
             lastCurrentScene = "Map 1"; //Mac dinh
         }
-
+        isWon = false;
     }
     
 
