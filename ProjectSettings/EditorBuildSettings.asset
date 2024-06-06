@@ -24,6 +24,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Levels/Map 3.unity
     guid: 63a8d9f5a19eff043ab8017584acc71a
   - enabled: 1
+    path: Assets/Scenes/Levels/Final Level.unity
+    guid: aad0f4f07e6888547a0f8450dbc69523
+  - enabled: 1
     path: Assets/Scenes/That bai.unity
     guid: 9833036867a6a6e40bdf0574722d58f8
   - enabled: 1

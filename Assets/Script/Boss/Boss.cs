@@ -24,7 +24,7 @@ public class Boss : EnemyMain
 
     void Start()
     {
-        health = 10;
+        //health = 10;
         speed = 3;
 
         rb = GetComponent<Rigidbody2D>();
@@ -120,6 +120,7 @@ public class Boss : EnemyMain
         isDead = true;
         anim.SetTrigger("Die");
         Destroy(gameObject, 1f);
+        Debug.Log("BossDie");
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -129,5 +130,11 @@ public class Boss : EnemyMain
             AttackPlayer();
             collision.gameObject.SendMessage("TakeDamage", 10);
         }
+    }
+
+    IEnumerator Victory()
+    {
+        yield return new WaitForSeconds(2f);
+        SceneLoader.Instance.WinGame();
     }
 }
