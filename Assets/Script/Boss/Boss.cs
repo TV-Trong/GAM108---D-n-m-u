@@ -136,7 +136,8 @@ public class Boss : EnemyMain
         col.enabled = false;
         isDead = true;
         anim.SetTrigger("Die");
-        Destroy(gameObject, 1f);
+        Destroy(gameObject, 3f);
+        StartCoroutine(Victory());
         Debug.Log("BossDie");
     }
 
