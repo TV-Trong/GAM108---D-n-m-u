@@ -44,7 +44,7 @@ public class Boss : EnemyMain
 
     void Update()
     {
-        if (isDead || isAttackingPlayer) return;
+        if (isDead || isAttackingPlayer || isTakingDamage) return;
    
         UpdateState();
         if (isDetectedPlayer)
