@@ -87,7 +87,15 @@ public class Loading : MonoBehaviour
         yield return new WaitForSeconds(2f);
         DataManager.Instance.SetCurrentPlayer(DataManager.Instance.playersList[i]);
         Debug.Log(DataManager.Instance.currentPlayer.playerName);
-        SceneManager.LoadScene(DataManager.Instance.playersList[i].lastCurrentScene);
+
+        if (!DataManager.Instance.currentPlayer.isWon)
+        {
+            SceneManager.LoadScene(DataManager.Instance.playersList[i].lastCurrentScene);
+        }
+        else
+        {
+            SceneLoader.Instance.WinGame();
+        }
     }
 
     public void CallDeletePlayer(int i)

@@ -40,6 +40,7 @@ public class SceneLoader : Singleton<SceneLoader>
 
     public void LoadNextLevel()
     {
+        DataManager.Instance.currentPlayer.ResetPos();
         int nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
         SceneManager.LoadScene(nextLevel);
     }
@@ -76,10 +77,12 @@ public class SceneLoader : Singleton<SceneLoader>
     }
     public void WinGame()
     {
+        BGMusic.Instance.StopAllSong();
         SceneManager.LoadScene("Chien thang");
     }
     public void LoseGame()
     {
+        BGMusic.Instance.StopAllSong();
         SceneManager.LoadScene("That bai");
     }
     public void ReloadScene()

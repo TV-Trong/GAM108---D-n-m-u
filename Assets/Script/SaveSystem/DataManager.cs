@@ -32,6 +32,11 @@ public class DataManager : Singleton<DataManager>
             Debug.LogWarning("Không tìm thấy dữ liệu!");
         }
     }
+    public void DeletePlayer()
+    {
+        playersList.Remove(currentPlayer);
+        JsonManager.Instance.SaveData();
+    }
 }
 public class PlayerFile
 {
@@ -44,6 +49,7 @@ public class PlayerFile
     public float timePlayed;
     public Vector2 lastPosition;
     public string lastCurrentScene;
+    public bool isWon;
     public PlayerFile(string name = "") //Danh cho tao nhan vat
     {
         playerName = name;
@@ -70,7 +76,7 @@ public class PlayerFile
         {
             lastCurrentScene = "Map 1"; //Mac dinh
         }
-
+        isWon = false;
     }
     
 
@@ -85,6 +91,10 @@ public class PlayerFile
     public void ResetHP()
     {
         health = 100;
+    }
+    public void ResetPos()
+    {
+        lastPosition = Vector2.zero;
     }
     public void CoinUp()
     {
