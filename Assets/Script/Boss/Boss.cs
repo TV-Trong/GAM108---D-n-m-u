@@ -1,5 +1,6 @@
 ﻿using Player;
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Boss : EnemyMain
@@ -8,11 +9,18 @@ public class Boss : EnemyMain
 
     private bool isAttackingPlayer = false;
     private bool isDead = false;
-    private float attackRange = 2f;
     private float hurtDuration = 0.5f;
     public Transform restPOS;
 
     private Vector3 initialPosition;
+
+    // audio
+    [SerializeField] private AudioClip hurt;
+    [SerializeField] private AudioClip attack;
+    [SerializeField] private AudioClip walk;
+
+    private AudioSource speaker;
+    [SerializeField] private AudioSource speakerWalk;
 
     void Start()
     {
@@ -30,6 +38,8 @@ public class Boss : EnemyMain
             Debug.LogError("Player object not found!");
         }
         initialPosition = transform.position;
+
+        speaker = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -39,6 +49,7 @@ public class Boss : EnemyMain
         UpdateState();
         if (isDetectedPlayer)
         {
+            speakerWalk.mute = false;
             //bool isPlayerRight = player.transform.position.x > transform.position.x;
             isMovingRight = player.transform.position.x > transform.position.x;
             FlipBoss();
@@ -49,6 +60,10 @@ public class Boss : EnemyMain
             {
                 transform.Translate(Vector2.left * speed * Time.deltaTime);
             }
+        } else
+        {
+            rb.velocity = Vector2.zero;
+            speakerWalk.mute = true;
         }
     }
 
@@ -94,6 +109,7 @@ public class Boss : EnemyMain
     IEnumerator Hurt()
     {
         anim.SetTrigger("Hurt");
+        speaker.PlayOneShot(hurt);
         yield return new WaitForSeconds(hurtDuration);
         isTakingDamage = false;
     }
