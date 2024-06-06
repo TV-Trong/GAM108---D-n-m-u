@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using UnityEditor.U2D;
 using UnityEngine;
 
 public class EnemyMain: MonoBehaviour
@@ -17,6 +18,7 @@ public class EnemyMain: MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public Rigidbody2D rb;
     public Animator anim;
+    public Collider2D col;
 
     private EnemyAI enemyAI;
 
@@ -24,13 +26,18 @@ public class EnemyMain: MonoBehaviour
     public bool isDetectedPlayer;
     public bool isTakingDamage = false;
 
+    // boss
+    public bool isSleep;
+
     void Start()
     {
+
     }
 
     public virtual void Flip()
     {
-        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * 1f, 1);
+        Vector2 localScale = spriteRenderer.transform.localScale;
+        transform.localScale = new Vector2(isMovingRight ? 1f : -1f * localScale.x, localScale.y);
     }
 
 
@@ -76,14 +83,24 @@ public class EnemyMain: MonoBehaviour
 
     public virtual void SetFollowPlayer()
     {
-        isDetectedPlayer = true;
-        speed += 2;
+        if (gameObject.name == "Boss")
+        {
+            isDetectedPlayer = true;
+            //isSleep = false;
+        } else
+        {
+            isDetectedPlayer = true;
+            speed += 2;
+        }
     }
 
     public virtual void SetUnFollowPlayer()
     {
-        isDetectedPlayer = false;
-        speed -= 2;
+        if (gameObject.name != "Boss")
+        {
+            isDetectedPlayer = false;
+            speed -= 2;
+        }
     }
 
 
