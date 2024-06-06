@@ -60,22 +60,7 @@ public class PlayerFile
         timeCreated = DateTime.Now;
         timePlayed = 0;
         lastPosition = Vector2.zero;
-        HashSet<string> admin = new HashSet<string>() { "Trong", "Tu", "Lam", "Tri Dinh", "Thuan"};
-        if (admin.Contains(name))
-        {
-            try
-            {
-                lastCurrentScene = name; //Lay scene cua admin
-            }
-            catch
-            {
-                lastCurrentScene = "Map 1"; //Khong ton tai scene cua admin
-            }
-        }
-        else
-        {
-            lastCurrentScene = "Map 1"; //Mac dinh
-        }
+        lastCurrentScene = "Map 1";
         isWon = false;
     }
     
