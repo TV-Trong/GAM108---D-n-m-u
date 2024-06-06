@@ -2314,6 +2314,11 @@ Transform:
   - {fileID: 889382599}
   m_Father: {fileID: 327738457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &803185204 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3526414090192305310, guid: bbf30814ea4cc8f4494b5175ba670e4b, type: 3}
+  m_PrefabInstance: {fileID: 447726699}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &816607254
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7338,13 +7343,33 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4697561573306329816}
     m_Modifications:
+    - target: {fileID: 95626633278163304, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: bd6e332845ff62f41b41e6584e88659f, type: 3}
+    - target: {fileID: 2190451505160463617, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+      propertyPath: walk
+      value: 
+      objectReference: {fileID: 8300000, guid: bd6e332845ff62f41b41e6584e88659f, type: 3}
     - target: {fileID: 2190451505160463617, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
       propertyPath: health
       value: 35
       objectReference: {fileID: 0}
+    - target: {fileID: 2190451505160463617, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 803185204}
+    - target: {fileID: 2190451505160463617, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+      propertyPath: speakerWalk
+      value: 
+      objectReference: {fileID: 1457266154}
     - target: {fileID: 3740836832468345631, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
       propertyPath: m_BodyType
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3740836832468345631, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+      propertyPath: m_GravityScale
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3784278145268169594, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
       propertyPath: m_Name
@@ -8100,6 +8125,11 @@ Transform:
 --- !u!4 &1457266153 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5400436279403379502, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
+  m_PrefabInstance: {fileID: 901641405}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1457266154 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 95626633278163304, guid: 1c24f67fd6229454ba3f0ca27fcf323b, type: 3}
   m_PrefabInstance: {fileID: 901641405}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1570199288

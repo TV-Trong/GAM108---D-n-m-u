@@ -53,29 +53,46 @@ public class Boss : EnemyMain
             //bool isPlayerRight = player.transform.position.x > transform.position.x;
             isMovingRight = player.transform.position.x > transform.position.x;
             FlipBoss();
-            if (/*isPlayerRight*/isMovingRight)
+            if (/*isPlayerRight*/isMovingRight && !isNearXPlayerPOS())
             {
                 transform.Translate(Vector2.right * speed * Time.deltaTime);
-            } else
+            } else if (!isMovingRight && !isNearXPlayerPOS())
             {
                 transform.Translate(Vector2.left * speed * Time.deltaTime);
+            } else if (isNearXPlayerPOS())
+            {
+                //rb.velocity = Vector2.zero;
             }
-        } else
+
+        } 
+        else
         {
             rb.velocity = Vector2.zero;
             speakerWalk.mute = true;
         }
+
+        Debug.Log("POS x = playerPOS x : " + isNearXPlayerPOS());
     }
 
     void FlipBoss()
     {
-        if (isMovingRight)
+        if (!isNearXPlayerPOS())
         {
-            spriteRenderer.flipX = true;
-        } else
-        {
-            spriteRenderer.flipX = false;
+            if (isMovingRight)
+            {
+                spriteRenderer.flipX = true;
+            }
+            else
+            {
+                spriteRenderer.flipX = false;
+            }
         }
+        else return;
+    }
+
+    bool isNearXPlayerPOS()
+    {
+        return Mathf.Abs(transform.position.x - player.transform.position.x) <= 1f;
     }
 
     void UpdateState()
