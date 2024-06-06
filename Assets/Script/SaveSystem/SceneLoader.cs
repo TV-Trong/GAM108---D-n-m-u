@@ -26,8 +26,11 @@ public class SceneLoader : Singleton<SceneLoader>
     }
     public void SaveAndGotoMain()
     {
-        playerMovement = FindObjectOfType<PlayerMovement>();
-        playerMovement.SavePosition();
+        if (playerMovement != null)
+        {
+            playerMovement = FindObjectOfType<PlayerMovement>();
+            playerMovement.SavePosition();
+        }
         JsonManager.Instance.SaveData();
         SceneManager.LoadScene("MainMenu");
     }
