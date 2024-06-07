@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class Boss : EnemyMain
 {
-    public GameObject player;
-
     private bool isAttackingPlayer = false;
     private bool isDead = false;
     private float hurtDuration = 0.5f;
@@ -33,6 +31,7 @@ public class Boss : EnemyMain
         col = GetComponent<Collider2D>();
 
         player = GameObject.Find("Player");
+
         if (player == null)
         {
             Debug.LogError("Player object not found!");

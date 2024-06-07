@@ -29,9 +29,12 @@ public class EnemyMain: MonoBehaviour
     // boss
     public bool isSleep;
 
+
+    // player
+    public GameObject player;
+
     void Start()
     {
-
     }
 
     public virtual void Flip()
