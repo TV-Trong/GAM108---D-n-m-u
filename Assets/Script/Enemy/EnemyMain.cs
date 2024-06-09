@@ -99,9 +99,9 @@ public class EnemyMain: MonoBehaviour
 
     public virtual void SetUnFollowPlayer()
     {
+        isDetectedPlayer = false;
         if (gameObject.name != "Boss")
         {
-            isDetectedPlayer = false;
             speed -= 2;
         }
     }
@@ -109,6 +109,7 @@ public class EnemyMain: MonoBehaviour
 
     private void OnDestroy()
     {
+        
         // Update score
         //enemyAI.RemoveMissingEnemies();
     }
