@@ -8,7 +8,6 @@ using UnityEngine.Rendering;
 public class Slime : EnemyMain
 {
     [SerializeField] private GameObject boxPOS;
-    [SerializeField] private GameObject playerPOS;
 
     void Start()
     {
@@ -17,12 +16,12 @@ public class Slime : EnemyMain
         damage = 2;
         isDetectedPlayer = false;
         isMovingRight = true;
-       
-       
 
-        playerPOS = GameObject.Find("Player");
 
-        if (playerPOS == null)
+
+        player = GameObject.Find("Player");
+
+        if (player == null)
         {
             Debug.LogError("Player object not found");
             return;
@@ -48,7 +47,7 @@ public class Slime : EnemyMain
 
             if (isDetectedPlayer)
             {
-                isMovingRight = playerPOS.transform.position.x > transform.position.x;
+                isMovingRight = player.transform.position.x > transform.position.x;
             }
             else
             {
