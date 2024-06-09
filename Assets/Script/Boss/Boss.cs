@@ -94,6 +94,7 @@ public class Boss : EnemyMain
                 transform.position = Vector2.MoveTowards(transform.position, restPOS.position, speed * Time.deltaTime);
                 //Hoi mau khi khong phat hien nguoi choi
                 health += Time.deltaTime * 3f;
+                health = Mathf.Clamp(health, 0, 35f);
             }
         }
         EnrageMode();
