@@ -34,7 +34,8 @@ Transform:
   m_LocalPosition: {x: 9.536114, y: -1.398257, z: -0.1204273}
   m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6625121035543148897}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &7371357854686647601
@@ -192,6 +193,9 @@ MonoBehaviour:
   hurt: {fileID: 8300000, guid: 2564e9099c55f684dab08514372e2f99, type: 3}
   attack: {fileID: 0}
   walk: {fileID: 0}
+  speakerWalk: {fileID: 0}
+  skill1Obj: {fileID: 0}
+  skill1POS: {fileID: 0}
 --- !u!95 &7263713981748623055
 Animator:
   serializedVersion: 5
@@ -309,3 +313,34 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &5520898900031873587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6625121035543148897}
+  m_Layer: 0
+  m_Name: Skill 1 POS
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6625121035543148897
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520898900031873587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.78, y: -0.32, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5400436279403379502}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

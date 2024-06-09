@@ -22,6 +22,10 @@ public class Boss : EnemyMain
     private AudioSource speaker;
     [SerializeField] private AudioSource speakerWalk;
 
+
+    // skill
+    [SerializeField] private GameObject skill1Obj;
+    [SerializeField] private Transform skill1POS;
     void Start()
     {
         //health = 10;
@@ -83,8 +87,6 @@ public class Boss : EnemyMain
                 FlipBoss();
                 transform.position = Vector2.MoveTowards(transform.position, restPOS.position, speed * Time.deltaTime);
             }
-            
-            
         }
 
     }
@@ -183,11 +185,25 @@ public class Boss : EnemyMain
     {
         while (true)
         {
-            if (isDetectedPlayer)
+            if (isDetectedPlayer && IsWithinDistance(transform.position, player.transform.position, 10f))
             {
-                Debug.Log("Bắn tơ");
+                Debug.Log("Skill 1");
+                Skill1Attack();
             }
             yield return new WaitForSeconds(5f);
         }
     }
+
+    void Skill1Attack()
+    {
+        if (!isAttackingPlayer)
+        {
+            isAttackingPlayer = true;
+            anim.SetTrigger("Attack");
+            Quaternion skillRotation =  isMovingRight ? Quaternion.identity : Quaternion.Euler(0, 180f, 0);
+            Instantiate(skill1Obj, skill1POS.position, skillRotation /*Quaternion.identity*/);
+            Invoke("FinishAttack", 1f);
+        }
+    }
+
 }
