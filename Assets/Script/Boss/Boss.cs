@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class Boss : EnemyMain
 {
+    private float baseHealth;
     private bool isAttackingPlayer = false;
     private bool isDead = false;
 
 
-    private float hurtDuration = 0.5f;
+    private float hurtDuration = 0.1f;
     public Transform restPOS;
 
     private Vector3 initialPosition;
@@ -26,15 +27,20 @@ public class Boss : EnemyMain
     // skill
     [SerializeField] private GameObject skill1Obj;
     [SerializeField] private Transform skill1POS;
+
+    [SerializeField]
+    SpriteRenderer sr;
     void Start()
     {
         //health = 10;
+        baseHealth = health;
         speed = 3;
 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = rb.GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
+        sr = GetComponent<SpriteRenderer>();
         isSleep = true;
         player = GameObject.Find("Player");
 
@@ -86,9 +92,27 @@ public class Boss : EnemyMain
                 isMovingRight = restPOS.position.x > transform.position.x;
                 FlipBoss();
                 transform.position = Vector2.MoveTowards(transform.position, restPOS.position, speed * Time.deltaTime);
+                //Hoi mau khi khong phat hien nguoi choi
+                health += Time.deltaTime * 3f;
             }
         }
+        EnrageMode();
+    }
 
+    public bool EnrageMode() //Phase 2
+    {
+        if (health < baseHealth / 2)
+        {
+            speed = 6f;
+            sr.color = new Color32(255, 98, 98, 255);
+            return true;
+        }
+        else
+        {
+            speed = 3;
+            sr.color = Color.white;
+            return false;
+        }
     }
 
     void FlipBoss()
@@ -169,8 +193,18 @@ public class Boss : EnemyMain
     {
         if (collision.gameObject.CompareTag("Player"))
         {
+            int damage;
             AttackPlayer();
-            collision.gameObject.SendMessage("TakeDamage", 10);
+
+            if (EnrageMode())
+            {
+                damage = Random.Range(30, 45);
+            }
+            else
+            {
+                damage = Random.Range(20, 35);
+            }
+            collision.gameObject.SendMessage("TakeDamage", damage);
         }
     }
 

@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Skill1 : MonoBehaviour
 {
-    
+    Boss bossCS;
     void Start()
     {
+        bossCS = FindObjectOfType<Boss>();
         Destroy(gameObject, 2f);
     }
 
@@ -19,7 +20,16 @@ public class Skill1 : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.SendMessage("TakeDamage", 10);
+            int damage;
+            if (bossCS.EnrageMode())
+            {
+                damage = Random.Range(30, 45);
+            }
+            else
+            {
+                damage = Random.Range(15, 25);
+            }
+            collision.SendMessage("TakeDamage", damage);
         }
     }
 }

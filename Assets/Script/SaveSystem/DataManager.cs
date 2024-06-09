@@ -61,6 +61,13 @@ public class PlayerFile
         timePlayed = 0;
         lastPosition = Vector2.zero;
         lastCurrentScene = "Map 1";
+        if (playerName != null)
+        {
+            if (playerName.ToUpper() == "BOSS")
+            {
+                lastCurrentScene = "Final Level";
+            }
+        }
         isWon = false;
     }
     
