@@ -31,14 +31,18 @@ public class Loading : MonoBehaviour
         deletePlayer.SetActive(false);
 
         //Dem thu tu nguoi choi trong danh sach
-        int count = 0;
+        int count = DataManager.Instance.playersList.Count - 1;
         foreach (PlayerFile player in DataManager.Instance.playersList)
         {
             SetInstance();
             FindChildren(count);
             SetText(count);
             ReplaceName();
-            count++;
+            count--;
+            if (count < 0)
+            {
+                return;
+            }
         }
     }
     private void SetInstance()
