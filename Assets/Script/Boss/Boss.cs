@@ -17,10 +17,13 @@ public class Boss : EnemyMain
 
     // audio
     [SerializeField] private AudioClip hurt;
-    [SerializeField] private AudioClip attack;
+    [SerializeField] private AudioClip meleeAttack;
     [SerializeField] private AudioClip walk;
+    [SerializeField] private AudioClip skill1;
+    [SerializeField] private AudioClip dealth;
+    [SerializeField] private AudioClip skill2;
 
-    private AudioSource speaker;
+    [SerializeField] private AudioSource speaker;
     [SerializeField] private AudioSource speakerWalk;
 
 
@@ -175,7 +178,7 @@ public class Boss : EnemyMain
         {
             isAttackingPlayer = true;
             anim.SetTrigger("Attack");
-
+            speaker.PlayOneShot(meleeAttack);
 
             int damage;
 
@@ -231,6 +234,7 @@ public class Boss : EnemyMain
         col.enabled = false;
         isDead = true;
         anim.SetTrigger("Die");
+        speaker.PlayOneShot(dealth);
         Destroy(gameObject, 3f);
         StartCoroutine(Victory());
         Debug.Log("BossDie");
@@ -267,6 +271,7 @@ public class Boss : EnemyMain
         {
             isAttackingPlayer = true;
             anim.SetTrigger("Attack");
+            speaker.PlayOneShot(skill1);
             Quaternion skillRotation =  isMovingRight ? Quaternion.identity : Quaternion.Euler(0, 180f, 0);
             Instantiate(skill1Obj, skill1POS.position, skillRotation /*Quaternion.identity*/);
             Invoke("FinishAttack", 1f);
