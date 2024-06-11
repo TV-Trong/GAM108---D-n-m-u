@@ -58,7 +58,10 @@ namespace Player
         //UI
         UpdateUI updateUI;
 
+        //God Mode
+        bool isGodModeOn;
 
+        GameObject godeModeObj;
         private void Start()
         {
             waterBubble = GetComponentInChildren<ParticleSystem>();
@@ -68,6 +71,9 @@ namespace Player
             speaker = FindObjectOfType<Speaker>();
             updateUI = FindObjectOfType<UpdateUI>();
             spriteRenderer = GetComponent<SpriteRenderer>();
+
+            godeModeObj = GameObject.Find("GodModeObj");
+            godeModeObj.SetActive(false);
 
             //Set spawn and Save
             transform.position = DataManager.Instance.currentPlayer.lastPosition;
@@ -120,6 +126,15 @@ namespace Player
                     toggleWaterBubble = !toggleWaterBubble;
                 }
             }
+
+            //God Mod is on
+            if (isGodModeOn)
+            {
+                DataManager.Instance.currentPlayer.ResetHP();
+                DataManager.Instance.currentPlayer.life = 99;
+                updateUI.UpdateValue();
+            }
+            godeModeObj.SetActive(isGodModeOn);
 
             //Tinh thoi gian choi
             DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
@@ -302,6 +317,11 @@ namespace Player
                 ParticleSystem bubble = Instantiate(waterBubble, transform.position, Quaternion.identity);
                 bubble.Play();
             }
+        }
+
+        public void CheckGodModeOn(bool isTrue)
+        {
+            isGodModeOn = isTrue;
         }
     }
 }
