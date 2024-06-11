@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 2190451505160463617}
   - component: {fileID: 7263713981748623055}
   - component: {fileID: 95626633278163304}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Boss
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -98,14 +98,14 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3784278145268169594}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 10
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8380ba9ac87e25d42bb368fdefd06cfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 35
   speed: 5
   damage: 2
   pos1: {fileID: 0}
@@ -192,10 +192,11 @@ MonoBehaviour:
   restPOS: {fileID: 0}
   hurt: {fileID: 8300000, guid: 2564e9099c55f684dab08514372e2f99, type: 3}
   attack: {fileID: 0}
-  walk: {fileID: 0}
-  speakerWalk: {fileID: 0}
-  skill1Obj: {fileID: 0}
-  skill1POS: {fileID: 0}
+  walk: {fileID: 8300000, guid: bd6e332845ff62f41b41e6584e88659f, type: 3}
+  speakerWalk: {fileID: 95626633278163304}
+  skill1Obj: {fileID: 7858677939897087130, guid: 5cc9bea41e656c44b90f5aa2299fc3ae, type: 3}
+  skill1POS: {fileID: 6625121035543148897}
+  sr: {fileID: 0}
 --- !u!95 &7263713981748623055
 Animator:
   serializedVersion: 5
@@ -227,7 +228,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: bd6e332845ff62f41b41e6584e88659f, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -322,7 +323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6625121035543148897}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Skill 1 POS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -338,7 +339,7 @@ Transform:
   m_GameObject: {fileID: 5520898900031873587}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.78, y: -0.32, z: 0}
+  m_LocalPosition: {x: 0.78, y: -0.428, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

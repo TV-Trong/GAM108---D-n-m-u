@@ -157,6 +157,12 @@ public class Boss : EnemyMain
         }
     }
 
+    string RayCastLayer()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
+        return hit.collider.ToString();
+    }
+
     void FinishAttack()
     {
         isAttackingPlayer = false;

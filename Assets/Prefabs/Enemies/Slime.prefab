@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3083571875351154929}
   - component: {fileID: 6466578158305341690}
   - component: {fileID: 5781826699470450891}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Slime
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -171,11 +171,13 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   rb: {fileID: 0}
   anim: {fileID: 0}
+  col: {fileID: 0}
   isMovingRight: 0
   isDetectedPlayer: 0
   isTakingDamage: 0
+  isSleep: 0
+  player: {fileID: 0}
   boxPOS: {fileID: 0}
-  playerPOS: {fileID: 0}
 --- !u!95 &5781826699470450891
 Animator:
   serializedVersion: 5
