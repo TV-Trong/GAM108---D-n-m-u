@@ -178,7 +178,6 @@ public class Boss : EnemyMain
 
 
             int damage;
-            AttackPlayer();
 
             if (EnrageMode())
             {
@@ -189,10 +188,19 @@ public class Boss : EnemyMain
                 damage = Random.Range(20, 35);
             }
 
-            player.SendMessage("TakeDamage", damage);
 
-            Invoke("FinishAttack", 1f);
+            StartCoroutine(MeleeAtackCoroutine(damage));
         }
+    }
+
+    IEnumerator MeleeAtackCoroutine(int damage)
+    {
+        player.SendMessage("TakeDamage", damage);
+
+        yield return new WaitForSeconds(1.5f);
+
+        isAttackingPlayer = false;
+
     }
 
     void FinishAttack()
@@ -230,10 +238,7 @@ public class Boss : EnemyMain
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            
-        }
+
     }
 
     IEnumerator Victory()
