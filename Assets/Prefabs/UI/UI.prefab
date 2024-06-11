@@ -1413,8 +1413,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 0c703452bafca524dbcdb43ef52ba7b7, type: 2}
-  m_sharedMaterial: {fileID: -3652219218394385972, guid: 0c703452bafca524dbcdb43ef52ba7b7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
+  m_sharedMaterial: {fileID: -3492458260311434643, guid: aac0026f3fb5b2c4c8b3a4a6f2a7e435, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

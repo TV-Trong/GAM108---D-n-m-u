@@ -77,7 +77,8 @@ public class Slime : EnemyMain
         if (collision.gameObject.CompareTag("Player"))
         {
             //Them sat thuong ngau nhien
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(Random.Range(10, 20));
+            int damage = Random.Range(10, 20);
+            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
         if (collision.gameObject.CompareTag("Gai"))
         {
