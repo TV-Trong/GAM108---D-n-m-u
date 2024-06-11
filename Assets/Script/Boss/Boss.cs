@@ -30,6 +30,9 @@ public class Boss : EnemyMain
 
     [SerializeField]
     SpriteRenderer sr;
+
+    // layerMask
+    private LayerMask playerLayer;
     void Start()
     {
         //health = 10;
@@ -41,6 +44,9 @@ public class Boss : EnemyMain
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
         sr = GetComponent<SpriteRenderer>();
+
+        playerLayer = LayerMask.GetMask("Player");
+
         isSleep = true;
         player = GameObject.Find("Player");
 
@@ -98,6 +104,22 @@ public class Boss : EnemyMain
             }
         }
         EnrageMode();
+
+        if (RayCastLayer() == "Player")
+        {
+            AttackPlayer();
+        }
+    }
+
+    string RayCastLayer()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 2f, playerLayer);
+        if (hit.collider != null)
+        {
+            Debug.Log("Layer Mask" + LayerMask.LayerToName(hit.collider.gameObject.layer));
+            return LayerMask.LayerToName(hit.collider.gameObject.layer);
+        }
+        return null;
     }
 
     public bool EnrageMode() //Phase 2
@@ -153,14 +175,24 @@ public class Boss : EnemyMain
         {
             isAttackingPlayer = true;
             anim.SetTrigger("Attack");
+
+
+            int damage;
+            AttackPlayer();
+
+            if (EnrageMode())
+            {
+                damage = Random.Range(30, 45);
+            }
+            else
+            {
+                damage = Random.Range(20, 35);
+            }
+
+            player.SendMessage("TakeDamage", damage);
+
             Invoke("FinishAttack", 1f);
         }
-    }
-
-    string RayCastLayer()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position);
-        return hit.collider.ToString();
     }
 
     void FinishAttack()
@@ -200,18 +232,7 @@ public class Boss : EnemyMain
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            int damage;
-            AttackPlayer();
-
-            if (EnrageMode())
-            {
-                damage = Random.Range(30, 45);
-            }
-            else
-            {
-                damage = Random.Range(20, 35);
-            }
-            collision.gameObject.SendMessage("TakeDamage", damage);
+            
         }
     }
 
