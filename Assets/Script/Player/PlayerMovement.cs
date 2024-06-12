@@ -1,9 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -20,6 +16,10 @@ namespace Player
         [SerializeField] private Transform groundCheck; // Object con của player
         [SerializeField] private LayerMask groundLayer; // layer của nền đứng
         [SerializeField] private LayerMask ladderLayer; // layer của cầu thang
+        [SerializeField] private LayerMask underwater;  // water
+        //Water Bubble Particle System
+        [SerializeField] ParticleSystem waterBubble;
+        bool toggleWaterBubble;
 
         private float horizontal;
         [SerializeField] private float speed = 8f;
@@ -54,9 +54,13 @@ namespace Player
         //UI
         UpdateUI updateUI;
 
+        //God Mode
+        bool isGodModeOn;
 
+        GameObject godeModeObj;
         private void Start()
         {
+            waterBubble = GetComponentInChildren<ParticleSystem>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
             tranformPlayer = GetComponent<Transform>();
@@ -64,9 +68,13 @@ namespace Player
             updateUI = FindObjectOfType<UpdateUI>();
             spriteRenderer = GetComponent<SpriteRenderer>();
 
+            godeModeObj = GameObject.Find("GodModeObj");
+            godeModeObj.SetActive(false);
+
             //Set spawn and Save
             transform.position = DataManager.Instance.currentPlayer.lastPosition;
             SceneLoader.Instance.SaveOnNewLevel();
+
         }
 
         // Update is called once per frame
@@ -93,6 +101,39 @@ namespace Player
                     speaker.StopAudioRemune();
                 }
             }
+
+            if (IsUnderwater())
+            {
+                Debug.Log("Is Underwater");
+                speed = 4f;
+                jumpPower = 8f;
+                if (!toggleWaterBubble)
+                {
+                    StartCoroutine(MakingWaterBubble());
+                    toggleWaterBubble = !toggleWaterBubble;
+                }
+            }
+            else
+            {
+                speed = 8f;
+                jumpPower = 16f;
+                if (toggleWaterBubble)
+                {
+                    toggleWaterBubble = !toggleWaterBubble;
+                }
+            }
+
+            //God Mod is on
+            if (isGodModeOn)
+            {
+                DataManager.Instance.currentPlayer.ResetHP();
+                DataManager.Instance.currentPlayer.life = 99;
+                updateUI.UpdateValue();
+            }
+            godeModeObj.SetActive(isGodModeOn);
+
+            //Tinh thoi gian choi
+            DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
         }
 
         private void FixedUpdate()
@@ -100,8 +141,6 @@ namespace Player
             animator.SetBool("isClimbing", IsNearLadder());
             HandleClimbing();
 
-            //Tinh thoi gian choi
-            DataManager.Instance.currentPlayer.SetTimePlayed(Time.deltaTime);
         }
 
         #region Checking Methods
@@ -129,6 +168,10 @@ namespace Player
             return Physics2D.OverlapCircle(transform.position, 0.3f, ladderLayer);
         }
 
+        public bool IsUnderwater()
+        {
+            return Physics2D.OverlapCircle(transform.position, 0.1f, underwater);
+        }
         public bool isMove()
         {
             return horizontal != 0;
@@ -170,11 +213,17 @@ namespace Player
             }
             else
             {
-                rb.gravityScale = 5f;
+                if (IsUnderwater())
+                {
+                    rb.gravityScale = 1f;
+                }
+                else
+                {
+                    rb.gravityScale = 5f;
+                }
             }
-
-
         }
+
         public void TakeDamage(int damage)
         {
             if (isHurting) return;
@@ -256,6 +305,20 @@ namespace Player
             DataManager.Instance.currentPlayer.lastPosition = transform.position;
         }
         
+        IEnumerator MakingWaterBubble()
+        {
+            while (IsUnderwater())
+            {
+                yield return new WaitForSeconds(0.5f);
+                ParticleSystem bubble = Instantiate(waterBubble, transform.position, Quaternion.identity);
+                bubble.Play();
+            }
+        }
+
+        public void CheckGodModeOn(bool isTrue)
+        {
+            isGodModeOn = isTrue;
+        }
     }
 }
 

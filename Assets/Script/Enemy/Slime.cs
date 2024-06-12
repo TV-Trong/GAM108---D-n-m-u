@@ -1,14 +1,10 @@
 ﻿using Player;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Slime : EnemyMain
 {
     [SerializeField] private GameObject boxPOS;
-    [SerializeField] private GameObject playerPOS;
 
     void Start()
     {
@@ -17,12 +13,12 @@ public class Slime : EnemyMain
         damage = 2;
         isDetectedPlayer = false;
         isMovingRight = true;
-       
-       
 
-        playerPOS = GameObject.Find("Player");
 
-        if (playerPOS == null)
+
+        player = GameObject.Find("Player");
+
+        if (player == null)
         {
             Debug.LogError("Player object not found");
             return;
@@ -48,7 +44,7 @@ public class Slime : EnemyMain
 
             if (isDetectedPlayer)
             {
-                isMovingRight = playerPOS.transform.position.x > transform.position.x;
+                isMovingRight = player.transform.position.x > transform.position.x;
             }
             else
             {
@@ -78,7 +74,8 @@ public class Slime : EnemyMain
         if (collision.gameObject.CompareTag("Player"))
         {
             //Them sat thuong ngau nhien
-            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(Random.Range(20, 35));
+            int damage = Random.Range(10, 20);
+            collision.gameObject.GetComponent<PlayerMovement>().TakeDamage(damage);
         }
         if (collision.gameObject.CompareTag("Gai"))
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealingItem : MonoBehaviour
 {
     // Lượng máu hồi lại khi nhân vật tiếp xúc với vật phẩm
-    public int healingAmount = 20;
+    public int healingAmount = 25;
 
     // Hàm này sẽ được gọi khi một collider khác chạm vào collider của vật phẩm này
     private void OnTriggerEnter2D(Collider2D other)
@@ -14,14 +14,17 @@ public class HealingItem : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Lấy component Health từ đối tượng Player
-            PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
+            if (DataManager.Instance.currentPlayer.health < 99f)
             {
-                // Hồi lại máu cho nhân vật
-                playerMovement.Heal(healingAmount);
+                PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
+                if (playerMovement != null)
+                {
+                    // Hồi lại máu cho nhân vật
+                    playerMovement.Heal(healingAmount);
 
-                // Huỷ vật phẩm sau khi sử dụng
-                Destroy(gameObject);
+                    // Huỷ vật phẩm sau khi sử dụng
+                    Destroy(gameObject);
+                }
             }
         }
     }
