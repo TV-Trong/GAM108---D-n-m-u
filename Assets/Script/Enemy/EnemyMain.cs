@@ -86,7 +86,7 @@ public class EnemyMain: MonoBehaviour
 
     public virtual void SetFollowPlayer()
     {
-        if (player != null)
+        if (player != null || gameObject != null)
         {
             if (gameObject.name == "Boss")
             {
@@ -103,7 +103,7 @@ public class EnemyMain: MonoBehaviour
 
     public virtual void SetUnFollowPlayer()
     {
-        if (player != null)
+        if (player != null || gameObject != null)
         {
             isDetectedPlayer = false;
             if (gameObject.name != "Boss")
