@@ -1,9 +1,6 @@
 ﻿using Player;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Slime : EnemyMain
 {

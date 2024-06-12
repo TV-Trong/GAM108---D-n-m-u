@@ -1,6 +1,4 @@
-﻿using Player;
-using System.Collections;
-using System.Runtime.CompilerServices;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Boss : EnemyMain

@@ -1,7 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using UnityEditor.U2D;
 using UnityEngine;
 
 public class EnemyMain: MonoBehaviour
