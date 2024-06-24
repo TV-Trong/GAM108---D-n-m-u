@@ -83,23 +83,30 @@ public class EnemyMain: MonoBehaviour
 
     public virtual void SetFollowPlayer()
     {
-        if (gameObject.name == "Boss")
+        if (player != null || gameObject != null)
         {
-            isDetectedPlayer = true;
-            //isSleep = false;
-        } else
-        {
-            isDetectedPlayer = true;
-            speed += 2;
+            if (gameObject.name == "Boss")
+            {
+                isDetectedPlayer = true;
+                //isSleep = false;
+            }
+            else
+            {
+                isDetectedPlayer = true;
+                speed += 2;
+            }
         }
     }
 
     public virtual void SetUnFollowPlayer()
     {
-        isDetectedPlayer = false;
-        if (gameObject.name != "Boss")
+        if (player != null || gameObject != null)
         {
-            speed -= 2;
+            isDetectedPlayer = false;
+            if (gameObject.name != "Boss")
+            {
+                speed -= 2;
+            }
         }
     }
 

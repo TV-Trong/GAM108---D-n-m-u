@@ -15,10 +15,13 @@ public class Boss : EnemyMain
 
     // audio
     [SerializeField] private AudioClip hurt;
-    [SerializeField] private AudioClip attack;
+    [SerializeField] private AudioClip meleeAttack;
     [SerializeField] private AudioClip walk;
+    [SerializeField] private AudioClip skill1;
+    [SerializeField] private AudioClip dealth;
+    [SerializeField] private AudioClip skill2;
 
-    private AudioSource speaker;
+    [SerializeField] private AudioSource speaker;
     [SerializeField] private AudioSource speakerWalk;
 
 
@@ -28,6 +31,9 @@ public class Boss : EnemyMain
 
     [SerializeField]
     SpriteRenderer sr;
+
+    // layerMask
+    private LayerMask playerLayer;
     void Start()
     {
         //health = 10;
@@ -39,6 +45,9 @@ public class Boss : EnemyMain
         anim = GetComponent<Animator>();
         col = GetComponent<Collider2D>();
         sr = GetComponent<SpriteRenderer>();
+
+        playerLayer = LayerMask.GetMask("Player");
+
         isSleep = true;
         player = GameObject.Find("Player");
 
@@ -96,6 +105,22 @@ public class Boss : EnemyMain
             }
         }
         EnrageMode();
+
+        if (RayCastLayer() == "Player")
+        {
+            AttackPlayer();
+        }
+    }
+
+    string RayCastLayer()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, player.transform.position - transform.position, 2f, playerLayer);
+        if (hit.collider != null)
+        {
+            Debug.Log("Layer Mask" + LayerMask.LayerToName(hit.collider.gameObject.layer));
+            return LayerMask.LayerToName(hit.collider.gameObject.layer);
+        }
+        return null;
     }
 
     public bool EnrageMode() //Phase 2
@@ -151,8 +176,32 @@ public class Boss : EnemyMain
         {
             isAttackingPlayer = true;
             anim.SetTrigger("Attack");
-            Invoke("FinishAttack", 1f);
+            speaker.PlayOneShot(meleeAttack);
+
+            int damage;
+
+            if (EnrageMode())
+            {
+                damage = Random.Range(30, 45);
+            }
+            else
+            {
+                damage = Random.Range(20, 35);
+            }
+
+
+            StartCoroutine(MeleeAtackCoroutine(damage));
         }
+    }
+
+    IEnumerator MeleeAtackCoroutine(int damage)
+    {
+        player.SendMessage("TakeDamage", damage);
+
+        yield return new WaitForSeconds(1.5f);
+
+        isAttackingPlayer = false;
+
     }
 
     void FinishAttack()
@@ -183,6 +232,7 @@ public class Boss : EnemyMain
         col.enabled = false;
         isDead = true;
         anim.SetTrigger("Die");
+        speaker.PlayOneShot(dealth);
         Destroy(gameObject, 3f);
         StartCoroutine(Victory());
         Debug.Log("BossDie");
@@ -190,21 +240,7 @@ public class Boss : EnemyMain
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            int damage;
-            AttackPlayer();
 
-            if (EnrageMode())
-            {
-                damage = Random.Range(30, 45);
-            }
-            else
-            {
-                damage = Random.Range(20, 35);
-            }
-            collision.gameObject.SendMessage("TakeDamage", damage);
-        }
     }
 
     IEnumerator Victory()
@@ -233,6 +269,7 @@ public class Boss : EnemyMain
         {
             isAttackingPlayer = true;
             anim.SetTrigger("Attack");
+            speaker.PlayOneShot(skill1);
             Quaternion skillRotation =  isMovingRight ? Quaternion.identity : Quaternion.Euler(0, 180f, 0);
             Instantiate(skill1Obj, skill1POS.position, skillRotation /*Quaternion.identity*/);
             Invoke("FinishAttack", 1f);

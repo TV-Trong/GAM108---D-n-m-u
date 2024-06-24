@@ -111,17 +111,6 @@
                 },
                 {
                     "name": "",
-                    "id": "aa381d5b-1d76-475d-a8f6-96b4f7109128",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9d791da5-1f82-45af-8913-e13e7b752976",
                     "path": "<Keyboard>/j",
                     "interactions": "",
